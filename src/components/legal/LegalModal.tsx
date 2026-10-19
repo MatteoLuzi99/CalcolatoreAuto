@@ -127,12 +127,12 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               </div>
 
               <div className="space-y-2">
-                <h3 className="font-bold text-slate-900 text-sm">2. Assenza di Cookie di Profilazione o Tracciamento</h3>
+                <h3 className="font-bold text-slate-900 text-sm">2. Assenza di Cookie di Profilazione &amp; Web Analytics Privacy-First</h3>
                 <p>
-                  Questo sito <strong>non fa uso di alcun cookie di terze parti, n&eacute; di profilazione o tracciamento pubblicitario</strong>{' '}
-                  (nessun utilizzo di Google Analytics, Meta Pixel o script di profilazione comportamentale).
-                  Non &egrave; pertanto richiesto n&eacute; necessario alcun banner bloccante del consenso (CMP),
-                  in piena conformit&agrave; con le <em>Linee Guida Cookie del Garante Privacy del 10 giugno 2021</em>.
+                  Questo sito <strong>non fa uso di cookie di profilazione o tracciamento pubblicitario</strong> (nessun pixel di tracciamento commerciale o profilazione comportamentale).
+                </p>
+                <p>
+                  Per monitorare in forma strettamente aggregata il volume di traffico e le prestazioni del software viene utilizzato <strong>Vercel Web Analytics</strong> in modalit&agrave; <em>cookieless</em> (senza memorizzazione di cookie sul dispositivo): nessun dato personale identificativo, nessun indirizzo IP e nessun dato di navigazione sensibile viene profilato o ceduto a terzi. Non &egrave; pertanto richiesto alcun banner di consenso preventivo (CMP), in piena conformit&agrave; con le <em>Linee Guida del Garante Privacy del 10 giugno 2021</em>.
                 </p>
               </div>
 

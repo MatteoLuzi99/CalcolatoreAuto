@@ -79,6 +79,7 @@ L'applicazione è stata progettata seguendo il principio di **Privacy-by-Design*
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 - **Grafici:** [Recharts](https://recharts.org/)
 - **Icone:** [Lucide React](https://lucide.dev/)
+- **Analytics:** [@vercel/analytics](https://vercel.com/analytics) (Privacy-first, cookieless, GDPR-compliant)
 - **Test Runner:** [Vitest](https://vitest.dev/) (12 unit test matematici e di sicurezza)
 
 ---

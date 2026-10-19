@@ -14,6 +14,7 @@ import { DeepDiveTabs } from './components/charts/DeepDiveTabs';
 import { TutorialGuide } from './components/tutorial/TutorialGuide';
 import { LegalFooter } from './components/legal/LegalFooter';
 import { PdfReportModal } from './components/pdf/PdfReportModal';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const [inputs, setInputs] = useState<CalculatorInputs>(() => {
@@ -150,6 +151,9 @@ export default function App() {
           calc={calc}
         />
       </div>
+
+      {/* Vercel Web Analytics (Cookieless, GDPR-compliant traffic insights) */}
+      <Analytics />
     </div>
   );
 }
