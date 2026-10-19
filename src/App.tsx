@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { CalculatorInputs } from './types/calculator';
 import { calculateAllOptions, DEFAULT_INPUTS } from './lib/financialEngine';
 import { parseInputsFromUrl } from './lib/storage';
@@ -150,6 +151,7 @@ export default function App() {
           calc={calc}
         />
       </div>
+      <Analytics />
     </div>
   );
 }
