@@ -44,7 +44,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                 Informative Legali, Privacy &amp; Disclaimer Finanziario
               </h2>
               <p className="text-[11px] text-slate-500">
-                Conformit&agrave; GDPR (UE 2016/679), Art. 2250 c.c. e Direttiva MiFID II
+                Conformit&agrave; Privacy GDPR (UE 2016/679), Architettura 100% Client-Side e Direttiva MiFID II
               </p>
             </div>
           </div>
@@ -117,11 +117,12 @@ export const LegalModal: React.FC<LegalModalProps> = ({
               </div>
 
               <div className="space-y-2">
-                <h3 className="font-bold text-slate-900 text-sm">1. Titolare del Trattamento</h3>
+                <h3 className="font-bold text-slate-900 text-sm">1. Natura del Progetto e Titolare del Trattamento</h3>
                 <p>
-                  Ai sensi del Regolamento (UE) 2016/679 (&ldquo;GDPR&rdquo;), il Titolare del trattamento &egrave;{' '}
-                  <strong>[Ragione Sociale Azienda S.r.l.]</strong>, con sede legale in [Via Roma 1, 00100 Roma (RM)],
-                  C.F. e P.IVA [IT00000000000], PEC: <code>azienda@pec.it</code>.
+                  L&apos;applicazione web <strong>AutoFin BTP</strong> &egrave; un progetto software personale, indipendente e a titolo puramente divulgativo ed educativo, realizzato da uno sviluppatore privato senza fini di lucro e senza esercizio di attivit&agrave; d&apos;impresa o professionale (nessun obbligo di partita IVA ex art. 2082 c.c.).
+                </p>
+                <p>
+                  Poich&eacute; il software &egrave; strutturato con architettura <em>100% Client-Side</em> e non raccoglie, non memorizza e non trasmette alcun dato personale identificativo a server esterni, <strong>non viene effettuato alcun trattamento di dati personali degli utenti</strong> ai sensi del Regolamento (UE) 2016/679 (GDPR).
                 </p>
               </div>
 
