@@ -25,7 +25,7 @@ export const VerdictBanner: React.FC<VerdictBannerProps> = ({
   return (
     <section
       aria-label="Verdetto di convenienza finanziaria"
-      className="rounded-2xl border border-slate-200/80 bg-white shadow-sm p-6 transition-all"
+      className="rounded-2xl border border-slate-200/80 bg-white shadow-sm p-4 sm:p-6 transition-all"
     >
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         {/* Left column: Winner & Explanation */}
@@ -46,17 +46,22 @@ export const VerdictBanner: React.FC<VerdictBannerProps> = ({
             <button
               type="button"
               onClick={onToggleOpportunityCost}
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border transition-colors cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors cursor-pointer min-h-[32px] ${
                 inputs.includeOpportunityCost
                   ? 'bg-slate-900 text-white border-slate-900 hover:bg-slate-800'
                   : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
               }`}
               title={`Attiva o disattiva il rendimento ${instrumentName} sulla liquidità non spesa subito`}
             >
-              <Sparkles className="w-3 h-3" />
-              {inputs.includeOpportunityCost
-                ? `Costo Opportunità ${instrumentName}: Incluso`
-                : `Costo Opportunità ${instrumentName}: Escluso (Solo Esborso Vivo)`}
+              <Sparkles className="w-3 h-3 shrink-0" />
+              <span className="sm:hidden">
+                {inputs.includeOpportunityCost ? 'Costo Opp.: Incluso' : 'Costo Opp.: Escluso'}
+              </span>
+              <span className="hidden sm:inline">
+                {inputs.includeOpportunityCost
+                  ? `Costo Opportunità ${instrumentName}: Incluso`
+                  : `Costo Opportunità ${instrumentName}: Escluso (Solo Esborso Vivo)`}
+              </span>
             </button>
           </div>
 

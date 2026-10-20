@@ -59,11 +59,11 @@ export const LegalModal: React.FC<LegalModalProps> = ({
         </div>
 
         {/* Tab Buttons */}
-        <div className="flex border-b border-slate-200 bg-white px-6 gap-2 pt-2">
+        <div className="flex overflow-x-auto no-scrollbar border-b border-slate-200 bg-white px-4 sm:px-6 gap-2 pt-2 whitespace-nowrap">
           <button
             type="button"
             onClick={() => setActiveTab('privacy')}
-            className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
               activeTab === 'privacy'
                 ? 'border-blue-600 text-blue-700'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -76,7 +76,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           <button
             type="button"
             onClick={() => setActiveTab('financial')}
-            className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
               activeTab === 'financial'
                 ? 'border-blue-600 text-blue-700'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
@@ -89,7 +89,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           <button
             type="button"
             onClick={() => setActiveTab('corporate')}
-            className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`pb-2.5 px-3 text-xs font-bold border-b-2 transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
               activeTab === 'corporate'
                 ? 'border-blue-600 text-blue-700'
                 : 'border-transparent text-slate-500 hover:text-slate-800'

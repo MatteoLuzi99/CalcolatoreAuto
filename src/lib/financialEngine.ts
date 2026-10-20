@@ -387,9 +387,17 @@ export function calculateAllOptions(
       ? inputs.maxirataInterimCount
       : totalMonths;
 
-  // Tasso mensile: calcolato esclusivamente sul TAEG (Tasso Annuo Effettivo Globale)
-  // per incorporare il costo reale ed effettivo del finanziamento
-  const maxiMonthlyRate = Math.max(0, inputs.maxirataTaeg) / 100 / 12;
+  // Tasso mensile nominale (TAN) per il calcolo della rata di ammortamento contrattuale.
+  // Nei contratti di finanziamento ufficiali (come Škoda Clever Value, Volkswagen Progetto Valore, ecc.),
+  // la rata è calcolata esclusivamente sul TAN (Tasso Annuo Nominale).
+  // Se il TAN è 0.00% (tasso zero promozionale), la quota interessi è esattamente 0,00 € e la rata ammortizza solo
+  // la differenza tra capitale finanziato e Maxirata: (Capitale - Maxirata) / rate.
+  // Il TAEG include invece oneri accessori (istruttoria, incasso, bollo) e rappresenta il costo globale.
+  const effectiveTan =
+    typeof inputs.maxirataTan === 'number'
+      ? inputs.maxirataTan
+      : inputs.maxirataTaeg;
+  const maxiMonthlyRate = Math.max(0, effectiveTan) / 100 / 12;
 
   let maxiInstallmentPure = 0;
   let monthlyBalloonInterest = 0;

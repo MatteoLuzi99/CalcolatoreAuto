@@ -59,7 +59,7 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner & Context */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-sm">
+      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-6 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
           <div className="flex items-start gap-3.5">
             <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600 shrink-0">
@@ -112,9 +112,9 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
       </div>
 
       {appliedFeedback && (
-        <div className="bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-sm text-xs font-bold flex items-center justify-between animate-fade-in">
+        <div className="bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-sm text-xs font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 animate-fade-in">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4" />
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
             <span>
               Strumento applicato con successo:{' '}
               <span className="underline">{appliedFeedback}</span>! Tutti i calcoli e il simulatore sono stati aggiornati.
@@ -124,7 +124,7 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
             <button
               type="button"
               onClick={onNavigateToSimulator}
-              className="bg-white text-emerald-800 px-3 py-1 rounded-lg text-xs font-bold hover:bg-emerald-50 transition-colors"
+              className="bg-white text-emerald-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-emerald-50 transition-colors w-full sm:w-auto text-center"
             >
               Vai al Simulatore &rarr;
             </button>
@@ -225,7 +225,7 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
                 <button
                   type="button"
                   onClick={() => handleApplyInstrument(instrument)}
-                  className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 min-h-[44px] ${
                     isSelected
                       ? 'bg-emerald-600 text-white shadow-xs'
                       : 'bg-slate-100 hover:bg-slate-200 text-slate-800'

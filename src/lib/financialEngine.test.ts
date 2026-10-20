@@ -221,5 +221,42 @@ describe('Financial Engine — Calcolatore Auto & BTP', () => {
       expect(res.verdict.winnerLabel).toContain('Conto Deposito');
     }
   });
+
+  it('accurately calculates real quote Škoda Kamiq Be More (35 installments of 119 € with TAN 0% and TAEG 1.01%)', () => {
+    // Škoda Kamiq Be More 1.0 TSI 95cv:
+    // Listino 28.800 €, Promo 24.033 €, Anticipo 3.514,31 €, Istruttoria 380 € (nel credito)
+    // Finanziato 20.898,69 €, 35 rate da 119 €, VFG 16.733,66 €, TAN 0,00%, TAEG 1,01%, incasso 3,40 €
+    const res = calculateAllOptions({
+      ...DEFAULT_INPUTS,
+      scenarioName: 'Škoda Kamiq Be More 1.0 TSI',
+      carPriceCash: 28800,
+      financingDiscount: 28800 - 24033, // 4.767 € di sconto promo
+      downPaymentCash: 3514.31,
+      tradeInValue: 0,
+      extraServicesFee: 0,
+      originationFee: 380,
+      monthlyCollectionFee: 3.4,
+      stampDuty: 52.24,
+      maxirataMonths: 36,
+      maxirataInterimCount: 35,
+      maxirataTan: 0.0,
+      maxirataTaeg: 1.01,
+      maxirataFixedAmount: 16733.66,
+      maxirataPercent: Number(((16733.66 / 28800) * 100).toFixed(2)),
+      maxirataCustomMonthlyInstallment: 0, // Lasciato calcolare dalla formula via TAN!
+    });
+
+    // 1. Financed principal deve essere esattamente 20.898,69 € (24.033 - 3.514,31 + 380)
+    expect(res.maxirata.financedPrincipal).toBeCloseTo(20898.69, 1);
+    // 2. Rata pura calcolata dalla formula: (20.898,69 - 16.733,66) / 35 = 119,00 €!
+    expect(res.maxirata.monthlyInstallmentPure).toBeCloseTo(119.0, 1);
+    // 3. Rata comprensiva di spese incasso: 119,00 + 3,40 = 122,40 €!
+    expect(res.maxirata.monthlyFinancingPaymentWithFees).toBeCloseTo(122.4, 1);
+    // 4. Interessi puri balloon a TAN 0% devono essere 0,00 €!
+    expect(res.maxirata.monthlyInterestOnBalloon).toBe(0);
+    expect(res.maxirata.totalPureInterest1stPeriod).toBeCloseTo(0, 1);
+    // 5. In Card 3 (Maxirata No BTP) la rata deve coincidere al centesimo
+    expect(res.maxirataNoBtp.monthlyFinancingPaymentWithFees).toBeCloseTo(122.4, 1);
+  });
 });
 

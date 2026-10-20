@@ -203,15 +203,15 @@ export const BudgetGapSimulator: React.FC<BudgetGapSimulatorProps> = ({
             />
 
             {/* Quick Preset Buttons & Apply Action */}
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-b border-amber-200/60 pb-3">
-              <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-2.5 pt-1 border-b border-amber-200/60 pb-3">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                 <span className="text-xs font-semibold text-slate-500">Pillole rapide:</span>
                 {[50, 100, 150, 200, 250, 300].map((amt) => (
                   <button
                     key={amt}
                     type="button"
                     onClick={() => setCustomMonthly(amt)}
-                    className={`px-3 py-1 rounded-lg text-xs font-semibold tabular-nums transition-colors cursor-pointer ${
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold tabular-nums transition-colors cursor-pointer min-h-[34px] ${
                       customMonthly === amt
                         ? 'bg-amber-600 text-white shadow-xs'
                         : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
@@ -224,7 +224,7 @@ export const BudgetGapSimulator: React.FC<BudgetGapSimulatorProps> = ({
                 <button
                   type="button"
                   onClick={() => setCustomMonthly(Math.round(fullCoverageMonthly))}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1 min-h-[34px] ${
                     customMonthly === Math.round(fullCoverageMonthly)
                       ? 'bg-emerald-600 text-white shadow-xs'
                       : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300'
@@ -239,7 +239,7 @@ export const BudgetGapSimulator: React.FC<BudgetGapSimulatorProps> = ({
               <button
                 type="button"
                 onClick={handleApplyToMainCalc}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                className={`w-full sm:w-auto justify-center px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 shrink-0 min-h-[38px] ${
                   appliedFeedback
                     ? 'bg-emerald-600 text-white shadow-sm'
                     : 'bg-amber-600 hover:bg-amber-700 text-white shadow-xs'
@@ -535,8 +535,13 @@ export const BudgetGapSimulator: React.FC<BudgetGapSimulatorProps> = ({
           </div>
         </div>
 
+        {/* Mobile scroll hint */}
+        <div className="sm:hidden text-[11px] text-slate-400 flex items-center gap-1 mb-2 px-1">
+          <span>Scorri la tabella in orizzontale per vedere tutti i dati &rarr;</span>
+        </div>
+
         <div className="overflow-x-auto">
-          <table className="w-full text-xs text-left tabular-nums border-collapse">
+          <table className="w-full min-w-[680px] text-xs text-left tabular-nums border-collapse">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50/80 text-slate-700 font-bold uppercase text-[11px] tracking-wider">
                 <th className="py-3 px-3">Scenario</th>

@@ -75,7 +75,7 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
       {/* Tab Navigation Pill Bar */}
       <nav
         aria-label="Navigazione Pagine dell'Applicazione"
-        className="bg-white rounded-2xl border border-slate-200/90 p-1.5 shadow-xs flex flex-wrap gap-1.5"
+        className="bg-white rounded-2xl border border-slate-200/90 p-1.5 shadow-xs flex overflow-x-auto sm:flex-wrap no-scrollbar gap-1.5"
       >
         {PAGES.map((page) => {
           const Icon = page.icon;
@@ -86,14 +86,14 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
               key={page.id}
               type="button"
               onClick={() => onChangePage(page.id)}
-              className={`flex-1 min-w-[150px] sm:min-w-[180px] px-3.5 py-2.5 rounded-xl text-left transition-all cursor-pointer flex items-center gap-3 ${
+              className={`min-w-[135px] sm:min-w-[170px] shrink-0 sm:shrink sm:flex-1 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl text-left transition-all cursor-pointer flex items-center gap-2.5 sm:gap-3 ${
                 isActive
                   ? 'bg-slate-900 text-white shadow-sm ring-1 ring-slate-900'
                   : 'bg-transparent hover:bg-slate-50 text-slate-600 hover:text-slate-900'
               }`}
             >
               <div
-                className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                   isActive
                     ? 'bg-blue-600 text-white'
                     : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200'
@@ -107,7 +107,7 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
                   <span className="md:hidden">{page.shortTitle}</span>
                 </div>
                 <div
-                  className={`text-[11px] truncate ${
+                  className={`text-[10px] sm:text-[11px] truncate ${
                     isActive ? 'text-slate-300' : 'text-slate-400'
                   }`}
                 >
@@ -120,8 +120,8 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
       </nav>
 
       {/* Persistent Mini Vehicle Badge Bar (visible on all pages so user keeps context) */}
-      <div className="bg-slate-100/90 border border-slate-200/70 rounded-xl px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
-        <div className="flex items-center gap-2 font-medium">
+      <div className="bg-slate-100/90 border border-slate-200/70 rounded-xl px-3 sm:px-4 py-2 flex flex-wrap items-center justify-between gap-2 sm:gap-3 text-xs text-slate-600">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-medium">
           <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[11px]">
             AUTO
           </span>

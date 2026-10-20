@@ -12,6 +12,35 @@ export interface PresetOption {
 
 export const PRESET_SCENARIOS: PresetOption[] = [
   {
+    id: 'skoda_kamiq_real',
+    label: 'Škoda Kamiq (Preventivo Reale)',
+    badge: '35x119€ • VFG 16.734€',
+    inputs: {
+      ...DEFAULT_INPUTS,
+      scenarioName: 'Škoda Kamiq Be More 1.0 TSI (Clever Value)',
+      carPriceCash: 28800,
+      financingDiscount: 4767.0, // Prezzo Listino 28.800 - Prezzo Promo 24.033
+      tradeInValue: 0,
+      downPaymentCash: 3514.31,
+      extraServicesFee: 0,
+      originationFee: 380,
+      monthlyCollectionFee: 3.4,
+      stampDuty: 52.24,
+      mandatoryInsuranceMonthly: 0,
+      standardTaeg: 7.45,
+      standardMonths: 60,
+      maxirataTan: 0.0,
+      maxirataTaeg: 1.01,
+      maxirataMonths: 36,
+      maxirataInterimCount: 35,
+      maxirataCustomMonthlyInstallment: 119.0,
+      maxirataFixedAmount: 16733.66,
+      maxirataPercent: Number(((16733.66 / 28800) * 100).toFixed(2)),
+      btpGrossYield: 3.5,
+      taxRegime: 'btp_12_5',
+    },
+  },
+  {
     id: 'skoda_real',
     label: 'Škoda Fabia (Preventivo Reale)',
     badge: '35x99€ • VFG 14.065€',

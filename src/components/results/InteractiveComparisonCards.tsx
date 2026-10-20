@@ -30,6 +30,7 @@ const STANDARD_MONTH_PRESETS = [36, 48, 60, 72, 84];
 const REFINANCE_MONTH_PRESETS = [24, 36, 48, 60];
 const MAXIRATA_1ST_PERIOD_PRESETS = [24, 36, 48, 60];
 const MAXIRATA_PERCENT_PRESETS = [40, 50, 55, 60];
+const MAXIRATA_TAN_PRESETS = [0.0, 3.99, 5.99, 7.99];
 
 export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProps> = ({
   calc,
@@ -330,7 +331,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       key={m}
                       type="button"
                       onClick={() => onUpdateInputs({ standardMonths: m })}
-                      className={`py-1 rounded-md text-xs font-semibold tabular-nums transition-colors cursor-pointer ${
+                      className={`py-2 rounded-lg text-xs font-semibold tabular-nums transition-colors cursor-pointer min-h-[38px] flex items-center justify-center ${
                         inputs.standardMonths === m
                           ? 'bg-blue-600 text-white shadow-xs'
                           : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -642,10 +643,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 />
               </div>
 
-              <div className="flex items-center justify-between gap-2 pt-0.5">
-                <div className="flex items-center gap-1">
-                  <span className="text-[11px] text-slate-500">% listino:</span>
-                  <div className="flex gap-1">
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[11px] text-slate-500 font-medium">% listino:</span>
+                  <div className="flex flex-wrap gap-1">
                     {MAXIRATA_PERCENT_PRESETS.map((p) => (
                       <button
                         key={p}
@@ -658,7 +659,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                             maxirataCustomMonthlyInstallment: undefined,
                           });
                         }}
-                        className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all cursor-pointer ${
+                        className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer min-h-[30px] ${
                           Math.abs(maxirataNoBtp.maxirataPercent - p) < 0.6
                             ? 'bg-purple-700 text-white shadow-xs'
                             : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-100'
@@ -712,11 +713,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
               />
             </div>
 
-            {/* CONTROLLO DURATA 1° PERIODO MAXIRATA */}
+            {/* CONTROLLO DURATA 1° PERIODO MAXIRATA & SELETTORE 35/36 RATE */}
             <div className="py-2.5 px-3 bg-purple-50/40 rounded-xl border border-purple-200/60 my-2 space-y-1.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-slate-700">Durata 1° Periodo:</span>
-                <span className="font-bold text-purple-900 tabular-nums">{inputs.maxirataMonths} mesi</span>
+                <span className="font-bold text-purple-900 tabular-nums">
+                  {inputs.maxirataMonths} mesi ({inputs.maxirataInterimCount || inputs.maxirataMonths} rate)
+                </span>
               </div>
               <div className="grid grid-cols-4 gap-1">
                 {MAXIRATA_1ST_PERIOD_PRESETS.map((m) => (
@@ -730,7 +733,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                         maxirataCustomMonthlyInstallment: undefined,
                       })
                     }
-                    className={`py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                    className={`py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer min-h-[34px] ${
                       inputs.maxirataMonths === m
                         ? 'bg-purple-700 text-white shadow-xs'
                         : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-100'
@@ -740,6 +743,83 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   </button>
                 ))}
               </div>
+              {inputs.maxirataMonths === 36 && (
+                <div className="pt-1.5 flex items-center justify-between text-[11px] border-t border-purple-200/50">
+                  <span className="text-slate-600 font-medium">Numero rate interim:</span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => onUpdateInputs({ maxirataInterimCount: 35 })}
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
+                        inputs.maxirataInterimCount === 35
+                          ? 'bg-purple-700 text-white'
+                          : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-50'
+                      }`}
+                    >
+                      35 rate (es. Škoda/VAG)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onUpdateInputs({ maxirataInterimCount: 36 })}
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
+                        inputs.maxirataInterimCount === 36
+                          ? 'bg-purple-700 text-white'
+                          : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-50'
+                      }`}
+                    >
+                      36 rate standard
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* CONTROLLO TAN 1° PERIODO (Tasso Ammortamento Rata) */}
+            <div className="py-2.5 px-3 bg-purple-50/40 rounded-xl border border-purple-200/60 my-2 space-y-1.5">
+              <div className="flex items-center justify-between text-xs gap-2">
+                <span className="font-semibold text-slate-700">TAN Maxirata (Tasso Nominale):</span>
+                <NumericInput
+                  id="card-maxirata-tan"
+                  value={inputs.maxirataTan ?? 0}
+                  min={0}
+                  max={20}
+                  step={0.1}
+                  decimals={2}
+                  suffix="%"
+                  onChange={(val) => onUpdateInputs({ maxirataTan: val })}
+                  className="w-24"
+                  inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-white text-right"
+                />
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-1">
+                <span className="text-[10px] text-slate-500 font-medium">Preset TAN:</span>
+                <div className="flex gap-1">
+                  {MAXIRATA_TAN_PRESETS.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => onUpdateInputs({ maxirataTan: t })}
+                      className={`px-1.5 py-0.5 rounded text-[10px] font-bold cursor-pointer ${
+                        Math.abs((inputs.maxirataTan ?? 0) - t) < 0.05
+                          ? 'bg-purple-700 text-white'
+                          : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-50'
+                      }`}
+                    >
+                      {t.toFixed(t === 0 ? 0 : 2)}%
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={15}
+                step={0.1}
+                value={inputs.maxirataTan ?? 0}
+                onChange={(e) => onUpdateInputs({ maxirataTan: parseFloat(e.target.value) })}
+                className="w-full fintech-slider slider-purple"
+                aria-label="Slider TAN Finanziamento con Maxirata"
+              />
             </div>
 
             {/* CONTROLLO TAEG 1° PERIODO MAXIRATA */}
@@ -754,14 +834,9 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   step={0.05}
                   decimals={2}
                   suffix="%"
-                  onChange={(val) =>
-                    onUpdateInputs({
-                      maxirataTaeg: val,
-                      maxirataCustomMonthlyInstallment: undefined,
-                    })
-                  }
+                  onChange={(val) => onUpdateInputs({ maxirataTaeg: val })}
                   className="w-24"
-                  inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-white"
+                  inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-white text-right"
                 />
               </div>
               <input
@@ -770,15 +845,51 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 max={15}
                 step={0.05}
                 value={inputs.maxirataTaeg}
-                onChange={(e) =>
-                  onUpdateInputs({
-                    maxirataTaeg: parseFloat(e.target.value),
-                    maxirataCustomMonthlyInstallment: undefined,
-                  })
-                }
+                onChange={(e) => onUpdateInputs({ maxirataTaeg: parseFloat(e.target.value) })}
                 className="w-full fintech-slider slider-purple"
                 aria-label="TAEG Finanziamento con Maxirata"
               />
+            </div>
+
+            {/* CONTROLLO DIRETTO RATA MENSILE PREVENTIVO */}
+            <div className="py-2 px-3 bg-white rounded-xl border border-purple-200 my-2 flex items-center justify-between gap-2">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-slate-700">Rata Mensile dal Preventivo:</span>
+                <span className="text-[10px] text-slate-400">
+                  {inputs.maxirataCustomMonthlyInstallment
+                    ? `Fissata a ${formatEuro(inputs.maxirataCustomMonthlyInstallment, 2)}`
+                    : 'Calcolata da TAN (formula francese)'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <NumericInput
+                  id="card-maxirata-custom-inst"
+                  value={inputs.maxirataCustomMonthlyInstallment || 0}
+                  min={0}
+                  max={5000}
+                  step={1}
+                  decimals={2}
+                  suffix="€"
+                  placeholder="Auto da TAN"
+                  onChange={(val) =>
+                    onUpdateInputs({
+                      maxirataCustomMonthlyInstallment: val > 0 ? val : undefined,
+                    })
+                  }
+                  className="w-24"
+                  inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-purple-50/50 text-right"
+                />
+                {inputs.maxirataCustomMonthlyInstallment && (
+                  <button
+                    type="button"
+                    onClick={() => onUpdateInputs({ maxirataCustomMonthlyInstallment: undefined })}
+                    className="text-[10px] text-purple-700 underline font-semibold hover:text-purple-900 cursor-pointer"
+                    title="Ripristina calcolo automatico della rata"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* CONTROLLI EDITABILI PER IL RIFINANZIAMENTO (quando refinance è attivo) */}
@@ -1012,10 +1123,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 />
               </div>
 
-              <div className="flex items-center justify-between gap-2 pt-0.5">
-                <div className="flex items-center gap-1">
-                  <span className="text-[11px] text-slate-500">% listino:</span>
-                  <div className="flex gap-1">
+              <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[11px] text-slate-500 font-medium">% listino:</span>
+                  <div className="flex flex-wrap gap-1">
                     {MAXIRATA_PERCENT_PRESETS.map((p) => (
                       <button
                         key={p}
@@ -1028,7 +1139,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                             maxirataCustomMonthlyInstallment: undefined,
                           });
                         }}
-                        className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all cursor-pointer ${
+                        className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer min-h-[30px] ${
                           Math.abs(maxirata.maxirataPercent - p) < 0.6
                             ? 'bg-amber-700 text-white shadow-xs'
                             : 'bg-white text-slate-700 border border-amber-200 hover:bg-amber-100'
@@ -1082,11 +1193,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
               />
             </div>
 
-            {/* CONTROLLO DURATA 1° PERIODO MAXIRATA */}
+            {/* CONTROLLO DURATA 1° PERIODO MAXIRATA & SELETTORE 35/36 RATE */}
             <div className="py-2.5 px-3 bg-amber-50/50 rounded-xl border border-amber-200/60 my-2 space-y-1.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-slate-700">Durata 1° Periodo:</span>
-                <span className="font-bold text-amber-900 tabular-nums">{inputs.maxirataMonths} mesi</span>
+                <span className="font-bold text-amber-900 tabular-nums">
+                  {inputs.maxirataMonths} mesi ({inputs.maxirataInterimCount || inputs.maxirataMonths} rate)
+                </span>
               </div>
               <div className="grid grid-cols-4 gap-1">
                 {MAXIRATA_1ST_PERIOD_PRESETS.map((m) => (
@@ -1100,7 +1213,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                         maxirataCustomMonthlyInstallment: undefined,
                       })
                     }
-                    className={`py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                    className={`py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer min-h-[34px] ${
                       inputs.maxirataMonths === m
                         ? 'bg-amber-700 text-white shadow-xs'
                         : 'bg-white text-slate-700 border border-amber-200 hover:bg-amber-100'
@@ -1110,6 +1223,83 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   </button>
                 ))}
               </div>
+              {inputs.maxirataMonths === 36 && (
+                <div className="pt-1.5 flex items-center justify-between text-[11px] border-t border-amber-200/50">
+                  <span className="text-slate-600 font-medium">Numero rate interim:</span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => onUpdateInputs({ maxirataInterimCount: 35 })}
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
+                        inputs.maxirataInterimCount === 35
+                          ? 'bg-amber-700 text-white'
+                          : 'bg-white text-slate-700 border border-amber-200 hover:bg-amber-50'
+                      }`}
+                    >
+                      35 rate (es. Škoda/VAG)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onUpdateInputs({ maxirataInterimCount: 36 })}
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
+                        inputs.maxirataInterimCount === 36
+                          ? 'bg-amber-700 text-white'
+                          : 'bg-white text-slate-700 border border-amber-200 hover:bg-amber-50'
+                      }`}
+                    >
+                      36 rate standard
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* CONTROLLO TAN 1° PERIODO (Tasso Ammortamento Rata) */}
+            <div className="py-2.5 px-3 bg-amber-50/50 rounded-xl border border-amber-200/60 my-2 space-y-1.5">
+              <div className="flex items-center justify-between text-xs gap-2">
+                <span className="font-semibold text-slate-700">TAN Maxirata (Tasso Nominale):</span>
+                <NumericInput
+                  id="card-maxirata-btp-tan"
+                  value={inputs.maxirataTan ?? 0}
+                  min={0}
+                  max={20}
+                  step={0.1}
+                  decimals={2}
+                  suffix="%"
+                  onChange={(val) => onUpdateInputs({ maxirataTan: val })}
+                  className="w-24"
+                  inputClassName="text-xs text-amber-900 border-amber-300 font-bold bg-white text-right"
+                />
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-1">
+                <span className="text-[10px] text-slate-500 font-medium">Preset TAN:</span>
+                <div className="flex gap-1">
+                  {MAXIRATA_TAN_PRESETS.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => onUpdateInputs({ maxirataTan: t })}
+                      className={`px-1.5 py-0.5 rounded text-[10px] font-bold cursor-pointer ${
+                        Math.abs((inputs.maxirataTan ?? 0) - t) < 0.05
+                          ? 'bg-amber-700 text-white'
+                          : 'bg-white text-slate-700 border border-amber-200 hover:bg-amber-50'
+                      }`}
+                    >
+                      {t.toFixed(t === 0 ? 0 : 2)}%
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <input
+                type="range"
+                min={0}
+                max={15}
+                step={0.1}
+                value={inputs.maxirataTan ?? 0}
+                onChange={(e) => onUpdateInputs({ maxirataTan: parseFloat(e.target.value) })}
+                className="w-full fintech-slider slider-amber"
+                aria-label="Slider TAN Finanziamento con Maxirata"
+              />
             </div>
 
             {/* CONTROLLO TAEG MAXIRATA 1° PERIODO */}
@@ -1124,14 +1314,9 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   step={0.05}
                   decimals={2}
                   suffix="%"
-                  onChange={(val) =>
-                    onUpdateInputs({
-                      maxirataTaeg: val,
-                      maxirataCustomMonthlyInstallment: undefined,
-                    })
-                  }
+                  onChange={(val) => onUpdateInputs({ maxirataTaeg: val })}
                   className="w-24"
-                  inputClassName="text-xs text-amber-900 border-amber-300 font-bold bg-white"
+                  inputClassName="text-xs text-amber-900 border-amber-300 font-bold bg-white text-right"
                 />
               </div>
               <input
@@ -1140,15 +1325,51 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 max={15}
                 step={0.05}
                 value={inputs.maxirataTaeg}
-                onChange={(e) =>
-                  onUpdateInputs({
-                    maxirataTaeg: parseFloat(e.target.value),
-                    maxirataCustomMonthlyInstallment: undefined,
-                  })
-                }
+                onChange={(e) => onUpdateInputs({ maxirataTaeg: parseFloat(e.target.value) })}
                 className="w-full fintech-slider slider-amber"
                 aria-label="TAEG Finanziamento con Maxirata"
               />
+            </div>
+
+            {/* CONTROLLO DIRETTO RATA MENSILE PREVENTIVO */}
+            <div className="py-2 px-3 bg-white rounded-xl border border-amber-200 my-2 flex items-center justify-between gap-2">
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold text-slate-700">Rata Mensile dal Preventivo:</span>
+                <span className="text-[10px] text-slate-400">
+                  {inputs.maxirataCustomMonthlyInstallment
+                    ? `Fissata a ${formatEuro(inputs.maxirataCustomMonthlyInstallment, 2)}`
+                    : 'Calcolata da TAN (formula francese)'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <NumericInput
+                  id="card-maxirata-btp-custom-inst"
+                  value={inputs.maxirataCustomMonthlyInstallment || 0}
+                  min={0}
+                  max={5000}
+                  step={1}
+                  decimals={2}
+                  suffix="€"
+                  placeholder="Auto da TAN"
+                  onChange={(val) =>
+                    onUpdateInputs({
+                      maxirataCustomMonthlyInstallment: val > 0 ? val : undefined,
+                    })
+                  }
+                  className="w-24"
+                  inputClassName="text-xs text-amber-900 border-amber-300 font-bold bg-amber-50/50 text-right"
+                />
+                {inputs.maxirataCustomMonthlyInstallment && (
+                  <button
+                    type="button"
+                    onClick={() => onUpdateInputs({ maxirataCustomMonthlyInstallment: undefined })}
+                    className="text-[10px] text-amber-700 underline font-semibold hover:text-amber-900 cursor-pointer"
+                    title="Ripristina calcolo automatico della rata"
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* SELETTORE QUOTA MENSILE DA INVESTIRE NEL FONDO */}
@@ -1173,7 +1394,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       btpCustomMonthlyAmount: undefined,
                     })
                   }
-                  className={`flex-1 py-1 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                  className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer min-h-[36px] flex items-center justify-center text-center ${
                     inputs.btpContributionMode !== 'custom'
                       ? 'bg-emerald-600 text-white shadow-xs'
                       : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
@@ -1189,7 +1410,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       btpCustomMonthlyAmount: maxirata.effectiveMonthlyBtpSavings || 150,
                     })
                   }
-                  className={`py-1 px-2.5 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
+                  className={`py-1.5 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer min-h-[36px] flex items-center justify-center text-center ${
                     inputs.btpContributionMode === 'custom'
                       ? 'bg-emerald-600 text-white shadow-xs'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -1272,7 +1493,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   </div>
 
                   {/* MINI CONTROLLI RIFINANZIAMENTO GAP */}
-                  <div className="pt-2 border-t border-amber-200/60 space-y-1.5 text-[11px]">
+                  <div className="pt-2 border-t border-amber-200/60 space-y-1.5 text-xs">
                     <div className="flex items-center justify-between">
                       <span className="text-slate-600 font-medium">Modifica durata gap:</span>
                       <div className="flex gap-1">
@@ -1281,10 +1502,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                             key={m}
                             type="button"
                             onClick={() => onUpdateInputs({ refinanceMonths: m })}
-                            className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                            className={`px-2 py-1 rounded-md text-xs font-bold min-h-[30px] cursor-pointer ${
                               inputs.refinanceMonths === m
                                 ? 'bg-amber-700 text-white'
-                                : 'bg-white text-slate-700 border border-amber-200'
+                                : 'bg-white text-slate-700 border border-amber-200 hover:bg-amber-50'
                             }`}
                           >
                             {m}m

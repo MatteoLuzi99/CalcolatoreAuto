@@ -25,7 +25,7 @@ export const LegalFooter: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 shrink-0">
             <button
               type="button"
               onClick={() => setModalTab('privacy')}

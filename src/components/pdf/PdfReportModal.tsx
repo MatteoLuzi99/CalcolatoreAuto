@@ -52,25 +52,25 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Controls (Hidden in Print) */}
-        <div className="flex items-center justify-between pb-5 border-b border-slate-200 print:hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 print:hidden">
           <div className="flex items-center gap-2">
             <span className="p-2 rounded-xl bg-blue-50 text-blue-600">
               <Printer className="w-5 h-5" />
             </span>
             <div>
-              <h2 id="pdf-modal-title" className="text-lg font-bold text-slate-900">
+              <h2 id="pdf-modal-title" className="text-base sm:text-lg font-bold text-slate-900">
                 Report di Perizia Preventivo Auto (PDF Multi-Pagina)
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-[11px] sm:text-xs text-slate-500">
                 Pagina 1: Matrice Comparativa Completa &bull; Pagina 2: Grafici Visivi, Ammortamento &amp; Negoziazione
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md transition-all cursor-pointer"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md transition-all cursor-pointer"
             >
               <Download className="w-4 h-4" />
               <span>Salva in PDF / Stampa (2 Pagine)</span>
@@ -79,7 +79,7 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
               type="button"
               onClick={onClose}
               aria-label="Chiudi anteprima"
-              className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
             >
               <X className="w-5 h-5" />
             </button>
@@ -188,8 +188,8 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
                 <span className="text-[10px] font-normal text-slate-500">Valori calcolati al centesimo</span>
               </h4>
 
-              <div className="border border-slate-200 rounded-xl overflow-hidden">
-                <table className="w-full text-xs text-left tabular-nums">
+              <div className="border border-slate-200 rounded-xl overflow-x-auto print:overflow-visible">
+                <table className="w-full min-w-[540px] print:min-w-0 text-xs text-left tabular-nums">
                   <thead className="bg-slate-100 text-slate-700 uppercase font-bold text-[10px] border-b border-slate-200">
                     <tr>
                       <th className="p-2">Parametro / Voce di Spesa</th>
@@ -448,8 +448,8 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
                 <span>Evoluzione Temporale: Salvadanaio {instrumentName} vs Debito Residuo</span>
               </h4>
 
-              <div className="border border-slate-200 rounded-xl overflow-hidden">
-                <table className="w-full text-xs text-left tabular-nums">
+              <div className="border border-slate-200 rounded-xl overflow-x-auto print:overflow-visible">
+                <table className="w-full min-w-[540px] print:min-w-0 text-xs text-left tabular-nums">
                   <thead className="bg-slate-100 text-slate-700 uppercase font-bold text-[10px] border-b border-slate-200">
                     <tr>
                       <th className="p-2">Momento Temporale</th>

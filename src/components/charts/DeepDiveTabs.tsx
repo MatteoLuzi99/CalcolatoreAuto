@@ -218,7 +218,7 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
   return (
     <section
       aria-label="Analisi Approfondita e Piano di Ammortamento"
-      className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm"
+      className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-sm"
     >
       {/* Header & Selettore 3 Tab */}
       <div className="flex flex-col gap-4 border-b border-slate-200/80 pb-5 lg:flex-row lg:items-center lg:justify-between">
@@ -226,7 +226,7 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
           <span className="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
             Analisi Quantitativa & Flussi di Cassa
           </span>
-          <h2 className="mt-0.5 text-lg font-bold tracking-tight text-slate-900">
+          <h2 className="mt-0.5 text-base sm:text-lg font-bold tracking-tight text-slate-900">
             Confronto Temporale, Scomposizione Costi e Ammortamento
           </h2>
         </div>
@@ -234,21 +234,22 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
         <div
           role="tablist"
           aria-label="Viste di approfondimento"
-          className="inline-flex flex-wrap gap-1.5 rounded-xl bg-slate-100/90 p-1.5"
+          className="flex flex-wrap sm:inline-flex gap-1.5 rounded-xl bg-slate-100/90 p-1.5"
         >
           <button
             type="button"
             role="tab"
             aria-selected={activeTab === 'timeline'}
             onClick={() => setActiveTab('timeline')}
-            className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all ${
+            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-lg px-2.5 sm:px-3.5 py-2 text-xs font-semibold transition-all ${
               activeTab === 'timeline'
                 ? 'bg-white text-slate-900 shadow-xs ring-1 ring-slate-200/70'
                 : 'text-slate-600 hover:bg-white/60 hover:text-slate-900'
             }`}
           >
-            <TrendingUp className="h-3.5 w-3.5 text-teal-600" />
-            <span>Evoluzione Esborsi &amp; Crescita Salvadanaio {instrumentName}</span>
+            <TrendingUp className="h-3.5 w-3.5 text-teal-600 shrink-0" />
+            <span className="hidden sm:inline">Evoluzione Esborsi &amp; Crescita Salvadanaio {instrumentName}</span>
+            <span className="sm:hidden">1. Grafico Timeline</span>
           </button>
 
           <button
@@ -256,14 +257,15 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
             role="tab"
             aria-selected={activeTab === 'breakdown'}
             onClick={() => setActiveTab('breakdown')}
-            className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all ${
+            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-lg px-2.5 sm:px-3.5 py-2 text-xs font-semibold transition-all ${
               activeTab === 'breakdown'
                 ? 'bg-white text-slate-900 shadow-xs ring-1 ring-slate-200/70'
                 : 'text-slate-600 hover:bg-white/60 hover:text-slate-900'
             }`}
           >
-            <BarChart3 className="h-3.5 w-3.5 text-blue-600" />
-            <span>Scomposizione Costi (Prezzo vs Interessi vs {instrumentName})</span>
+            <BarChart3 className="h-3.5 w-3.5 text-blue-600 shrink-0" />
+            <span className="hidden sm:inline">Scomposizione Costi (Prezzo vs Interessi vs {instrumentName})</span>
+            <span className="sm:hidden">2. Scomposizione Costi</span>
           </button>
 
           <button
@@ -271,14 +273,15 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
             role="tab"
             aria-selected={activeTab === 'table'}
             onClick={() => setActiveTab('table')}
-            className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all ${
+            className={`inline-flex items-center gap-1.5 sm:gap-2 rounded-lg px-2.5 sm:px-3.5 py-2 text-xs font-semibold transition-all ${
               activeTab === 'table'
                 ? 'bg-white text-slate-900 shadow-xs ring-1 ring-slate-200/70'
                 : 'text-slate-600 hover:bg-white/60 hover:text-slate-900'
             }`}
           >
-            <Table className="h-3.5 w-3.5 text-amber-600" />
-            <span>Piano di Ammortamento &amp; Accumulo {instrumentName} (Mese per Mese)</span>
+            <Table className="h-3.5 w-3.5 text-amber-600 shrink-0" />
+            <span className="hidden sm:inline">Piano di Ammortamento &amp; Accumulo {instrumentName} (Mese per Mese)</span>
+            <span className="sm:hidden">3. Tabella Ammortamento</span>
           </button>
         </div>
       </div>
@@ -339,10 +342,9 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
                   content={<TimelineCustomTooltip maxirataMonth={maxirataMonth} />}
                 />
                 <Legend
-                  verticalAlign="top"
-                  height={36}
+                  verticalAlign="bottom"
                   iconType="circle"
-                  wrapperStyle={{ fontSize: '12px', paddingBottom: '8px' }}
+                  wrapperStyle={{ fontSize: '11px', paddingTop: '12px' }}
                 />
 
                 <ReferenceLine
@@ -496,8 +498,8 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
                 <XAxis
-                  dataKey="option"
-                  tick={{ fill: '#334155', fontSize: 12, fontWeight: 500 }}
+                  dataKey="shortLabel"
+                  tick={{ fill: '#334155', fontSize: 11, fontWeight: 500 }}
                   tickLine={false}
                   axisLine={{ stroke: '#CBD5E1' }}
                 />
@@ -510,10 +512,9 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
                 />
                 <Tooltip content={<BreakdownCustomTooltip />} />
                 <Legend
-                  verticalAlign="top"
-                  height={36}
+                  verticalAlign="bottom"
                   iconType="square"
-                  wrapperStyle={{ fontSize: '12px', paddingBottom: '8px' }}
+                  wrapperStyle={{ fontSize: '11px', paddingTop: '12px' }}
                 />
                 <Bar
                   dataKey="prezzoNettoAuto"
@@ -655,8 +656,8 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
                 </button>
               </div>
 
-              <span className="ml-1 text-xs font-semibold text-slate-600">Colonne:</span>
-              <div className="inline-flex rounded-lg border border-slate-200 bg-white p-0.5">
+              <span className="text-xs font-semibold text-slate-600">Colonne:</span>
+              <div className="flex flex-wrap rounded-lg border border-slate-200 bg-white p-0.5 gap-0.5">
                 <button
                   type="button"
                   onClick={() => setColumnFocus('all')}
@@ -666,7 +667,7 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  Tutte le colonne
+                  Tutte
                 </button>
                 <button
                   type="button"
@@ -688,7 +689,7 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  Focus Esborsi &amp; Debito
+                  Focus Debito
                 </button>
               </div>
             </div>
@@ -696,16 +697,21 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
             <button
               type="button"
               onClick={() => exportTimelineToCsv(calc.timeline, calc.inputs.scenarioName)}
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-800 shadow-2xs transition-all hover:border-slate-400 hover:bg-slate-50 active:scale-[0.99]"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-800 shadow-2xs transition-all hover:border-slate-400 hover:bg-slate-50 active:scale-[0.99] w-full sm:w-auto"
             >
               <Download className="h-3.5 w-3.5 text-teal-600" />
               <span>Esporta CSV</span>
             </button>
           </div>
 
+          {/* Hint mobile per scorrimento */}
+          <div className="sm:hidden text-[11px] text-slate-400 flex items-center gap-1 px-1">
+            <span>Scorri la tabella in orizzontale &rarr;</span>
+          </div>
+
           {/* Tabella con header sticky e tabular-nums */}
           <div className="max-h-[460px] overflow-auto rounded-xl border border-slate-200/90">
-            <table className="w-full border-collapse text-left text-xs tabular-nums">
+            <table className="w-full min-w-[700px] border-collapse text-left text-xs tabular-nums">
               <thead className="sticky top-0 z-10 bg-slate-100/95 text-[11px] font-semibold tracking-wider text-slate-600 uppercase backdrop-blur-xs">
                 <tr className="border-b border-slate-200">
                   <th className="py-3 pr-3 pl-4">Mese</th>

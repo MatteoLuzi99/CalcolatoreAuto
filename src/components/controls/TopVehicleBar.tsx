@@ -10,6 +10,8 @@ import {
   ShieldAlert,
   Receipt,
   RefreshCw,
+  Percent,
+  Coins,
 } from 'lucide-react';
 import { CalculatorInputs } from '../../types/calculator';
 import { formatEuro, formatPercent } from '../../lib/storage';
@@ -36,7 +38,7 @@ export function TopVehicleBar({
   return (
     <section
       aria-label="Dati Veicolo, Anticipo e Rendimento Liquidità"
-      className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6"
+      className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-4 sm:p-6"
     >
       {/* Card Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-5 border-b border-slate-100">
@@ -55,27 +57,28 @@ export function TopVehicleBar({
         </div>
 
         {/* Right Controls: Opportunity Cost Toggle + Drawer Toggle */}
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 cursor-pointer select-none transition-colors">
-            <input
-              type="checkbox"
-              checked={inputs.includeOpportunityCost}
-              onChange={(e) =>
-                onUpdateInputs({ includeOpportunityCost: e.target.checked })
-              }
-              className="sr-only peer"
-            />
-            <div className="relative w-9 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600" />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
+          <label className="inline-flex items-center justify-between sm:justify-start gap-2.5 px-3 py-2 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 cursor-pointer select-none transition-colors min-h-[38px]">
             <span className="text-xs font-semibold text-slate-700">
               Includi Costo Opportunit&agrave; Liquidit&agrave; {instrumentName}
             </span>
+            <div className="relative w-9 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600 shrink-0">
+              <input
+                type="checkbox"
+                checked={inputs.includeOpportunityCost}
+                onChange={(e) =>
+                  onUpdateInputs({ includeOpportunityCost: e.target.checked })
+                }
+                className="sr-only peer"
+              />
+            </div>
           </label>
 
           <button
             type="button"
             onClick={() => setIsDetailsOpen((prev) => !prev)}
             aria-expanded={isDetailsOpen}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+            className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer min-h-[38px] ${
               isDetailsOpen
                 ? 'bg-slate-900 text-white border-slate-900'
                 : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/90'
@@ -334,12 +337,12 @@ export function TopVehicleBar({
 
       {/* Expandable Drawer: Dettagli Preventivo & Spese Accessorie */}
       {isDetailsOpen && (
-        <div className="mt-6 pt-5 border-t border-slate-200/80 bg-slate-50/60 -mx-6 -mb-6 p-6 rounded-b-2xl">
-          <div className="flex items-center justify-between mb-4">
+        <div className="mt-6 pt-5 border-t border-slate-200/80 bg-slate-50/60 -mx-4 -mb-4 p-4 sm:-mx-6 sm:-mb-6 sm:p-6 rounded-b-2xl">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div className="flex items-center gap-2">
               <Receipt className="w-4 h-4 text-slate-600" />
               <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">
-                Dettagli Preventivo: Permuta, Istruttoria, Incasso Rata e Polizze
+                Dettagli Preventivo: Permuta, Tassi, Istruttoria, Incasso Rata e Maxirata
               </h3>
             </div>
             <span className="text-xs text-slate-500">
@@ -702,6 +705,111 @@ export function TopVehicleBar({
                   className="w-28"
                   inputClassName="text-xs text-purple-900 border-purple-300"
                 />
+              </div>
+            </div>
+
+            {/* 9. Tassi Maxirata (TAN & TAEG) */}
+            <div className="bg-white p-3.5 rounded-xl border border-purple-200/90 space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-purple-900 inline-flex items-center gap-1">
+                  <Percent className="w-3.5 h-3.5 text-purple-600" />
+                  <span>Tassi Finanziamento Maxirata</span>
+                </label>
+                <span className="text-[11px] font-bold text-purple-800">
+                  TAN {inputs.maxirataTan ?? 0}% • TAEG {inputs.maxirataTaeg}%
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <span className="text-[10px] text-slate-500 block mb-0.5 font-medium">TAN Nominale (%):</span>
+                  <NumericInput
+                    id="detail-maxirata-tan"
+                    value={inputs.maxirataTan ?? 0}
+                    min={0}
+                    max={20}
+                    step={0.1}
+                    decimals={2}
+                    suffix="%"
+                    onChange={(val) => onUpdateInputs({ maxirataTan: val })}
+                    className="w-full"
+                    inputClassName="text-xs text-purple-900 border-purple-300"
+                  />
+                </div>
+                <div>
+                  <span className="text-[10px] text-slate-500 block mb-0.5 font-medium">TAEG Globale (%):</span>
+                  <NumericInput
+                    id="detail-maxirata-taeg"
+                    value={inputs.maxirataTaeg}
+                    min={0}
+                    max={25}
+                    step={0.05}
+                    decimals={2}
+                    suffix="%"
+                    onChange={(val) => onUpdateInputs({ maxirataTaeg: val })}
+                    className="w-full"
+                    inputClassName="text-xs text-purple-900 border-purple-300"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 10. Rata Mensile del Preventivo & Rate Interim */}
+            <div className="bg-white p-3.5 rounded-xl border border-purple-200/90 space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-purple-900 inline-flex items-center gap-1">
+                  <Coins className="w-3.5 h-3.5 text-purple-600" />
+                  <span>Rata Mensile Preventivo</span>
+                </label>
+                <span className="text-[11px] font-bold text-purple-800">
+                  {inputs.maxirataInterimCount || inputs.maxirataMonths} rate
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <NumericInput
+                  id="detail-custom-installment"
+                  value={inputs.maxirataCustomMonthlyInstallment || 0}
+                  min={0}
+                  max={5000}
+                  step={1}
+                  decimals={2}
+                  suffix="€/m"
+                  placeholder="Auto da TAN"
+                  onChange={(val) =>
+                    onUpdateInputs({
+                      maxirataCustomMonthlyInstallment: val > 0 ? val : undefined,
+                    })
+                  }
+                  className="flex-1"
+                  inputClassName="text-xs text-purple-900 border-purple-300 font-bold"
+                />
+                {inputs.maxirataMonths === 36 && (
+                  <div className="flex gap-1 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => onUpdateInputs({ maxirataInterimCount: 35 })}
+                      className={`px-2 py-1 rounded text-[11px] font-bold cursor-pointer ${
+                        inputs.maxirataInterimCount === 35
+                          ? 'bg-purple-700 text-white'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      }`}
+                      title="35 rate mensili + maxirata finale al 36° mese"
+                    >
+                      35 rate
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onUpdateInputs({ maxirataInterimCount: 36 })}
+                      className={`px-2 py-1 rounded text-[11px] font-bold cursor-pointer ${
+                        inputs.maxirataInterimCount === 36
+                          ? 'bg-purple-700 text-white'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                      }`}
+                      title="36 rate mensili piene"
+                    >
+                      36 rate
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

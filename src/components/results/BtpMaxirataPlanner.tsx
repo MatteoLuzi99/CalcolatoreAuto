@@ -65,7 +65,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
   return (
     <section
       aria-label={`Pianificatore Salvadanaio ${instrumentName} per la Maxirata`}
-      className="rounded-2xl border border-slate-200/80 bg-white shadow-sm p-6 space-y-6"
+      className="rounded-2xl border border-slate-200/80 bg-white shadow-sm p-4 sm:p-6 space-y-6"
     >
       {/* Top Header & Tax Regime Selector */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100">
@@ -238,7 +238,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
 
         {/* Control 2: Capitale Iniziale già nel Salvadanaio al Mese 0 */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <label
                 htmlFor="planner-btp-initial-input"
@@ -263,7 +263,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
               decimals={0}
               suffix="€"
               onChange={(val) => onUpdateInputs({ btpInitialCapital: val })}
-              className="w-32"
+              className="w-full sm:w-32"
               inputClassName="text-xs bg-white"
             />
           </div>
@@ -281,7 +281,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
           />
           <div className="flex justify-between text-[10px] text-slate-400 tabular-nums">
             <span>0 € (Partenza da zero)</span>
-            <span>{formatEuro(Math.round(maxInitialSlider / 2))}</span>
+            <span className="hidden sm:inline">{formatEuro(Math.round(maxInitialSlider / 2))}</span>
             <span>{formatEuro(maxInitialSlider)} (100% coperto)</span>
           </div>
         </div>
@@ -322,7 +322,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
             <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
               Impegno Mensile Totale Reale
             </div>
-            <div className="mt-1 flex items-center justify-between text-xs font-bold text-slate-900 tabular-nums">
+            <div className="mt-1 flex flex-wrap items-center justify-between gap-1 text-xs font-bold text-slate-900 tabular-nums">
               <span>
                 {formatEuro(maxirata.monthlyInstallmentTotal, 0)} (Rata) +{' '}
                 {formatEuro(btpAccumulator.monthlySavingsRequired, 0)} ({instrumentName})

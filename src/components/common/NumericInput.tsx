@@ -10,6 +10,7 @@ export interface NumericInputProps {
   decimals?: number;
   suffix?: string;
   prefix?: string;
+  placeholder?: string;
   ariaLabel?: string;
   className?: string;
   inputClassName?: string;
@@ -32,6 +33,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
   decimals,
   suffix,
   prefix,
+  placeholder,
   ariaLabel,
   className = '',
   inputClassName = '',
@@ -104,6 +106,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
         id={id}
         type="text"
         inputMode="decimal"
+        placeholder={placeholder}
         aria-label={ariaLabel}
         step={step}
         value={draft}
