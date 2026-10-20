@@ -24,6 +24,7 @@ export default function App() {
 
   const [activePage, setActivePage] = useState<ActivePage>('comparison');
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
+  const [isSimpleMode, setIsSimpleMode] = useState<boolean>(true);
 
   const calc = useMemo(() => calculateAllOptions(inputs), [inputs]);
 
@@ -60,6 +61,8 @@ export default function App() {
             onReset={handleReset}
             onOpenTutorial={() => setActivePage('tutorial')}
             onDownloadPdf={() => setIsPdfModalOpen(true)}
+            isSimpleMode={isSimpleMode}
+            onToggleSimpleMode={() => setIsSimpleMode((prev) => !prev)}
           />
 
           {/* Multi-Page Navigation Bar */}
@@ -67,6 +70,7 @@ export default function App() {
             activePage={activePage}
             onChangePage={setActivePage}
             calc={calc}
+            isSimpleMode={isSimpleMode}
           />
 
           <main className="space-y-6">
@@ -78,25 +82,33 @@ export default function App() {
                   inputs={inputs}
                   onUpdateInputs={handleUpdateInputs}
                   netAnnualBtpYield={calc.netAnnualBtpYield}
+                  isSimpleMode={isSimpleMode}
+                  onToggleSimpleMode={() => setIsSimpleMode((prev) => !prev)}
                 />
 
                 {/* 2. Banner Verdetto Immediato */}
                 <VerdictBanner
                   calc={calc}
                   onToggleOpportunityCost={handleToggleOpportunityCost}
+                  isSimpleMode={isSimpleMode}
                 />
 
                 {/* 3. Le 4 Grandi Card Interattive a Confronto */}
                 <InteractiveComparisonCards
                   calc={calc}
                   onUpdateInputs={handleUpdateInputs}
+                  isSimpleMode={isSimpleMode}
                 />
 
-                {/* 4. Pianificatore Salvadanaio BTP per la Maxirata vs Rifinanziamento */}
-                <BtpMaxirataPlanner
-                  calc={calc}
-                  onUpdateInputs={handleUpdateInputs}
-                />
+                {/* 4. Approfondimento Dettagliato Salvadanaio (Visibile in Modalità Avanzata) */}
+                {!isSimpleMode && (
+                  <div className="pt-2">
+                    <BtpMaxirataPlanner
+                      calc={calc}
+                      onUpdateInputs={handleUpdateInputs}
+                    />
+                  </div>
+                )}
               </div>
             )}
 

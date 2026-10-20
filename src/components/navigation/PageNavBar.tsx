@@ -13,13 +13,14 @@ import { FullCalculationOutput } from '../../types/calculator';
 
 export type ActivePage = 'comparison' | 'simulator' | 'instruments' | 'amortization' | 'tutorial';
 
-interface PageNavBarProps {
+export interface PageNavBarProps {
   activePage: ActivePage;
   onChangePage: (page: ActivePage) => void;
   calc: FullCalculationOutput;
+  isSimpleMode?: boolean;
 }
 
-const PAGES: {
+const ALL_PAGES: {
   id: ActivePage;
   title: string;
   shortTitle: string;
@@ -28,37 +29,37 @@ const PAGES: {
 }[] = [
   {
     id: 'comparison',
-    title: '1. Confronto Preventivo & Opzioni Auto',
-    shortTitle: '1. Preventivo Auto',
-    subtitle: 'Contanti vs Standard vs Maxirata',
+    title: '1. Calcolatore & Confronto Preventivo',
+    shortTitle: '1. Calcolatore',
+    subtitle: 'Contanti vs Finanziamento vs Maxirata',
     icon: Car,
   },
   {
     id: 'simulator',
     title: '2. Simulatore Budget & Gap Maxirata',
-    shortTitle: '2. Simulatore Budget & Gap',
+    shortTitle: '2. Simulatore Gap',
     subtitle: 'Scegli quanto investire al mese',
     icon: Calculator,
   },
   {
     id: 'instruments',
-    title: '3. Strumenti Finanziari & Rendimenti 3Y',
-    shortTitle: '3. Strumenti & Rendimenti',
+    title: '3. Strumenti Finanziari & Rendimenti',
+    shortTitle: '3. Titoli & Rendimenti',
     subtitle: 'BTP, ETF Monetari, Azioni 3Y',
     icon: TrendingUp,
   },
   {
     id: 'amortization',
-    title: '4. Grafici & Piano di Ammortamento',
-    shortTitle: '4. Grafici & Tabella Mese',
+    title: '2. Tabella Mese per Mese & Grafici',
+    shortTitle: '2. Ammortamento & Grafici',
     subtitle: 'Evoluzione nel tempo e CSV',
     icon: BarChart3,
   },
   {
     id: 'tutorial',
-    title: '5. Guida & Tutorial',
-    shortTitle: '5. Tutorial',
-    subtitle: 'Come funziona e strategie',
+    title: '3. Guida & Trucchi',
+    shortTitle: '3. Guida',
+    subtitle: 'Come evitare le trappole dei concessionari',
     icon: BookOpen,
   },
 ];
@@ -67,8 +68,14 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
   activePage,
   onChangePage,
   calc,
+  isSimpleMode = true,
 }) => {
   const { inputs, maxirata } = calc;
+
+  // In modalità semplice mostriamo solo le 3 sezioni chiave senza dispersioni
+  const visiblePages = isSimpleMode
+    ? ALL_PAGES.filter((p) => p.id === 'comparison' || p.id === 'amortization' || p.id === 'tutorial')
+    : ALL_PAGES;
 
   return (
     <div className="space-y-3">
@@ -77,7 +84,7 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
         aria-label="Navigazione Pagine dell'Applicazione"
         className="bg-white rounded-2xl border border-slate-200/90 p-1.5 shadow-xs flex overflow-x-auto sm:flex-wrap no-scrollbar gap-1.5"
       >
-        {PAGES.map((page) => {
+        {visiblePages.map((page) => {
           const Icon = page.icon;
           const isActive = activePage === page.id;
 

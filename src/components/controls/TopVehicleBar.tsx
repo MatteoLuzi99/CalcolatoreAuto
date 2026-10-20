@@ -21,12 +21,16 @@ export interface TopVehicleBarProps {
   inputs: CalculatorInputs;
   onUpdateInputs: (patch: Partial<CalculatorInputs>) => void;
   netAnnualBtpYield: number;
+  isSimpleMode?: boolean;
+  onToggleSimpleMode?: () => void;
 }
 
 export function TopVehicleBar({
   inputs,
   onUpdateInputs,
   netAnnualBtpYield,
+  isSimpleMode = true,
+  onToggleSimpleMode,
 }: TopVehicleBarProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const instrumentName = inputs.selectedInstrumentName || 'BTP';
@@ -48,55 +52,70 @@ export function TopVehicleBar({
           </div>
           <div>
             <h2 className="text-base sm:text-lg font-bold text-slate-900">
-              1. Dati Veicolo, Anticipo &amp; Rendimento Liquidit&agrave;
+              1. I Dati del tuo Preventivo Auto
             </h2>
             <p className="text-xs text-slate-500">
-              Scrivi direttamente i valori esatti nelle caselle oppure usa gli slider
+              {isSimpleMode
+                ? 'Inserisci il prezzo dell’auto, l’anticipo e l’offerta della concessionaria. Confronto istantaneo.'
+                : 'Configurazione avanzata: personalizza tassi, anticipo, spese di istruttoria e rendimenti.'}
             </p>
           </div>
         </div>
 
-        {/* Right Controls: Opportunity Cost Toggle + Drawer Toggle */}
+        {/* Right Controls: Opportunity Cost & Mode Toggle */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
-          <label className="inline-flex items-center justify-between sm:justify-start gap-2.5 px-3 py-2 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 cursor-pointer select-none transition-colors min-h-[38px]">
-            <span className="text-xs font-semibold text-slate-700">
-              Includi Costo Opportunit&agrave; Liquidit&agrave; {instrumentName}
-            </span>
-            <div className="relative w-9 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600 shrink-0">
-              <input
-                type="checkbox"
-                checked={inputs.includeOpportunityCost}
-                onChange={(e) =>
-                  onUpdateInputs({ includeOpportunityCost: e.target.checked })
-                }
-                className="sr-only peer"
-              />
-            </div>
-          </label>
+          {!isSimpleMode && (
+            <label className="inline-flex items-center justify-between sm:justify-start gap-2.5 px-3 py-2 rounded-xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200/80 cursor-pointer select-none transition-colors min-h-[38px]">
+              <span className="text-xs font-semibold text-slate-700">
+                Includi Costo Opportunit&agrave; Liquidit&agrave; {instrumentName}
+              </span>
+              <div className="relative w-9 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600 shrink-0">
+                <input
+                  type="checkbox"
+                  checked={inputs.includeOpportunityCost}
+                  onChange={(e) =>
+                    onUpdateInputs({ includeOpportunityCost: e.target.checked })
+                  }
+                  className="sr-only peer"
+                />
+              </div>
+            </label>
+          )}
 
-          <button
-            type="button"
-            onClick={() => setIsDetailsOpen((prev) => !prev)}
-            aria-expanded={isDetailsOpen}
-            className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer min-h-[38px] ${
-              isDetailsOpen
-                ? 'bg-slate-900 text-white border-slate-900'
-                : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/90'
-            }`}
-          >
-            <SlidersHorizontal className="w-3.5 h-3.5" />
-            <span>Dettagli Preventivo &amp; Spese Accessorie</span>
-            {isDetailsOpen ? (
-              <ChevronUp className="w-3.5 h-3.5" />
-            ) : (
-              <ChevronDown className="w-3.5 h-3.5" />
-            )}
-          </button>
+          {isSimpleMode ? (
+            <button
+              type="button"
+              onClick={onToggleSimpleMode}
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 transition-all cursor-pointer min-h-[38px]"
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5 text-slate-600" />
+              <span>Passa a Parametri Dettagliati</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsDetailsOpen((prev) => !prev)}
+              aria-expanded={isDetailsOpen}
+              className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer min-h-[38px] ${
+                isDetailsOpen
+                  ? 'bg-slate-900 text-white border-slate-900'
+                  : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/90'
+              }`}
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <span>Dettagli Spese Accessorie &amp; Polizze</span>
+              {isDetailsOpen ? (
+                <ChevronUp className="w-3.5 h-3.5" />
+              ) : (
+                <ChevronDown className="w-3.5 h-3.5" />
+              )}
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Main 4-Column Controls Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-5">
+      {/* Main Controls Grid */}
+      <div className={`grid grid-cols-1 sm:grid-cols-2 ${isSimpleMode ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-5 sm:gap-6 pt-5`}>
         {/* 1. Prezzo Auto (Contanti) */}
         <div className="p-4 rounded-xl bg-slate-50/70 border border-slate-200/60 flex flex-col justify-between space-y-3">
           <div className="space-y-1.5">
@@ -277,62 +296,155 @@ export function TopVehicleBar({
           </div>
         </div>
 
-        {/* 4. Rendimento Annuo Lordo BTP */}
-        <div className="p-4 rounded-xl bg-emerald-50/50 border border-emerald-200/70 flex flex-col justify-between space-y-3">
-          <div className="space-y-1.5">
-            <label
-              htmlFor="input-btpGrossYield"
-              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-800"
-            >
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Rendimento Lordo {instrumentName}</span>
-            </label>
-            <div className="flex items-center justify-between gap-2">
-              <NumericInput
-                id="input-btpGrossYield"
-                value={inputs.btpGrossYield}
-                min={0}
-                max={20}
-                step={0.05}
-                decimals={2}
-                suffix="%"
-                onChange={(val) => onUpdateInputs({ btpGrossYield: val })}
-                className="flex-1"
-                inputClassName="text-base py-1.5 text-emerald-900 border-emerald-300 focus:border-emerald-600"
-              />
-              <span className="px-2 py-1 rounded-md bg-emerald-100/90 text-emerald-800 text-xs font-bold tabular-nums shrink-0">
-                Netto: {formatPercent(netAnnualBtpYield, 2)}
-              </span>
-            </div>
-          </div>
+        {/* Se Modalità Semplice: Box 3 per la Rata e Maxirata della Concessionaria */}
+        {isSimpleMode ? (
+          <div className="p-4 rounded-xl bg-purple-50/50 border border-purple-200/80 flex flex-col justify-between space-y-3">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-purple-900">
+                  <Coins className="w-3.5 h-3.5 text-purple-600" />
+                  <span>Preventivo Concessionaria</span>
+                </label>
+                <div className="flex gap-1">
+                  {[36, 48].map((m) => (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() =>
+                        onUpdateInputs({
+                          maxirataMonths: m,
+                          maxirataInterimCount: m === 36 ? 35 : m,
+                        })
+                      }
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer transition-colors ${
+                        inputs.maxirataMonths === m
+                          ? 'bg-purple-700 text-white shadow-xs'
+                          : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-100'
+                      }`}
+                    >
+                      {m} mesi
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-          <div className="space-y-1">
-            <input
-              type="range"
-              aria-label={`Slider Rendimento Annuo Lordo ${instrumentName}`}
-              min={0}
-              max={7}
-              step={0.1}
-              value={Math.min(7, Math.max(0, inputs.btpGrossYield))}
-              onChange={(e) =>
-                onUpdateInputs({ btpGrossYield: Number(e.target.value) })
-              }
-              className="w-full fintech-slider slider-emerald"
-            />
-            <div className="flex items-center justify-between text-[11px] text-emerald-700 tabular-nums">
-              <span>0%</span>
-              <span className="font-semibold">
-                Tassazione{' '}
-                {inputs.taxRegime === 'btp_12_5'
-                  ? '12,5%'
-                  : inputs.taxRegime === 'deposito_26'
-                  ? '26%'
-                  : '0%'}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <div>
+                  <span className="text-[10px] text-slate-500 font-medium block">Rata Preventivo (€/m)</span>
+                  <NumericInput
+                    id="simple-monthly-inst"
+                    value={inputs.maxirataCustomMonthlyInstallment || 0}
+                    min={0}
+                    max={5000}
+                    step={1}
+                    decimals={2}
+                    suffix="€/m"
+                    placeholder="Auto da TAN"
+                    onChange={(val) =>
+                      onUpdateInputs({
+                        maxirataCustomMonthlyInstallment: val > 0 ? val : undefined,
+                      })
+                    }
+                    className="w-full"
+                    inputClassName="text-sm py-1 font-bold text-purple-950 border-purple-300 bg-white"
+                  />
+                </div>
+                <div>
+                  <span className="text-[10px] text-slate-500 font-medium block">Maxirata Finale VFG (€)</span>
+                  <NumericInput
+                    id="simple-maxirata-amount"
+                    value={
+                      inputs.maxirataFixedAmount && inputs.maxirataFixedAmount > 0
+                        ? inputs.maxirataFixedAmount
+                        : Number(((inputs.carPriceCash * (inputs.maxirataPercent / 100))).toFixed(2))
+                    }
+                    min={0}
+                    max={inputs.carPriceCash * 1.5}
+                    step={50}
+                    decimals={2}
+                    suffix="€"
+                    onChange={(val) => {
+                      const newPercent =
+                        inputs.carPriceCash > 0
+                          ? Number(((val / inputs.carPriceCash) * 100).toFixed(2))
+                          : inputs.maxirataPercent;
+                      onUpdateInputs({
+                        maxirataFixedAmount: val,
+                        maxirataPercent: newPercent,
+                      });
+                    }}
+                    className="w-full"
+                    inputClassName="text-sm py-1 font-bold text-purple-950 border-purple-300 bg-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-purple-800/90 pt-1 border-t border-purple-200/60 leading-snug">
+              <span>Durata: {inputs.maxirataMonths} mesi ({inputs.maxirataInterimCount || inputs.maxirataMonths} rate)</span>
+              <span className="font-semibold text-purple-900">
+                TAN {inputs.maxirataTan ?? 0}% • TAEG {inputs.maxirataTaeg}%
               </span>
-              <span>7,0%</span>
             </div>
           </div>
-        </div>
+        ) : (
+          /* 4. Rendimento Annuo Lordo BTP in Modalità Avanzata */
+          <div className="p-4 rounded-xl bg-emerald-50/50 border border-emerald-200/70 flex flex-col justify-between space-y-3">
+            <div className="space-y-1.5">
+              <label
+                htmlFor="input-btpGrossYield"
+                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-800"
+              >
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Rendimento Lordo {instrumentName}</span>
+              </label>
+              <div className="flex items-center justify-between gap-2">
+                <NumericInput
+                  id="input-btpGrossYield"
+                  value={inputs.btpGrossYield}
+                  min={0}
+                  max={20}
+                  step={0.05}
+                  decimals={2}
+                  suffix="%"
+                  onChange={(val) => onUpdateInputs({ btpGrossYield: val })}
+                  className="flex-1"
+                  inputClassName="text-base py-1.5 text-emerald-900 border-emerald-300 focus:border-emerald-600"
+                />
+                <span className="px-2 py-1 rounded-md bg-emerald-100/90 text-emerald-800 text-xs font-bold tabular-nums shrink-0">
+                  Netto: {formatPercent(netAnnualBtpYield, 2)}
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <input
+                type="range"
+                aria-label={`Slider Rendimento Annuo Lordo ${instrumentName}`}
+                min={0}
+                max={7}
+                step={0.1}
+                value={Math.min(7, Math.max(0, inputs.btpGrossYield))}
+                onChange={(e) =>
+                  onUpdateInputs({ btpGrossYield: Number(e.target.value) })
+                }
+                className="w-full fintech-slider slider-emerald"
+              />
+              <div className="flex items-center justify-between text-[11px] text-emerald-700 tabular-nums">
+                <span>0%</span>
+                <span className="font-semibold">
+                  Tassazione{' '}
+                  {inputs.taxRegime === 'btp_12_5'
+                    ? '12,5%'
+                    : inputs.taxRegime === 'deposito_26'
+                    ? '26%'
+                    : '0%'}
+                </span>
+                <span>7,0%</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Expandable Drawer: Dettagli Preventivo & Spese Accessorie */}

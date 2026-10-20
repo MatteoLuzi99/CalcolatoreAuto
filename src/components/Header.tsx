@@ -19,6 +19,8 @@ export interface HeaderProps {
   onReset: () => void;
   onOpenTutorial?: () => void;
   onDownloadPdf?: () => void;
+  isSimpleMode?: boolean;
+  onToggleSimpleMode?: () => void;
 }
 
 export function Header({
@@ -28,6 +30,8 @@ export function Header({
   onReset,
   onOpenTutorial,
   onDownloadPdf,
+  isSimpleMode = true,
+  onToggleSimpleMode,
 }: HeaderProps) {
   const [copiedFeedback, setCopiedFeedback] = useState(false);
 
@@ -76,8 +80,38 @@ export function Header({
 
           {/* Right: Scenario Name Input & Actions */}
           <div className="flex flex-wrap items-center gap-2.5">
+            {/* Simple vs Advanced Mode Toggle */}
+            {onToggleSimpleMode && (
+              <div className="inline-flex items-center rounded-xl bg-slate-100 p-1 border border-slate-200 shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => isSimpleMode || onToggleSimpleMode()}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    isSimpleMode
+                      ? 'bg-white text-blue-700 shadow-xs ring-1 ring-slate-200'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                  title="Interfaccia semplice e snella con soli 3 dati da preventivo"
+                >
+                  ✨ Semplice
+                </button>
+                <button
+                  type="button"
+                  onClick={() => !isSimpleMode || onToggleSimpleMode()}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    !isSimpleMode
+                      ? 'bg-slate-900 text-white shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                  title="Interfaccia avanzata: sblocca tutti i tassi, spese accessorie e dettagli matematici"
+                >
+                  ⚙️ Avanzata
+                </button>
+              </div>
+            )}
+
             {/* Editable Scenario Name (Modello auto da periziare) */}
-            <div className="relative flex items-center w-full sm:w-64">
+            <div className="relative flex items-center w-full sm:w-60">
               <PenLine className="w-3.5 h-3.5 text-slate-400 absolute left-3 pointer-events-none" />
               <input
                 type="text"
