@@ -118,7 +118,7 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
       {/* Persistent Vehicle Context Bar */}
       <div className="bg-slate-100 rounded-lg px-3.5 py-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
         <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-medium">
-          <span className="px-2 py-0.5 rounded bg-slate-900 text-white font-bold text-[10px] tracking-wide uppercase">
+          <span className="px-2 py-0.5 rounded bg-slate-900 text-white font-semibold text-[11px]">
             Veicolo
           </span>
           <span className="font-semibold text-slate-900">

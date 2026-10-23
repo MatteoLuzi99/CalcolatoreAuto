@@ -9,9 +9,6 @@ import {
   ChevronUp,
   Receipt,
   RefreshCw,
-  Percent,
-  Coins,
-  ShieldCheck,
 } from 'lucide-react';
 import { CalculatorInputs } from '../../types/calculator';
 import { formatEuro, formatPercent } from '../../lib/storage';
@@ -83,7 +80,6 @@ export function TopVehicleBar({
   const totalUpfront = inputs.downPaymentCash + inputs.tradeInValue;
   const maxDownPayment = Math.min(40000, Math.max(0, promoPrice - inputs.tradeInValue));
 
-  // Rileva la categoria corrispondente in base al prezzo o preset
   const selectedCategory =
     VEHICLE_CATEGORIES.find((c) =>
       inputs.scenarioName?.toLowerCase().includes(c.id) ||
@@ -107,31 +103,31 @@ export function TopVehicleBar({
   return (
     <section
       aria-label="Dati Veicolo, Anticipo e Rendimento Liquidità"
-      className="bg-white rounded-xl border border-slate-200/90 overflow-hidden"
+      className="bg-white rounded-lg border border-slate-200 overflow-hidden"
     >
       {/* Editorial Automotive Banner */}
-      <div className="relative bg-slate-900 text-white min-h-[140px] sm:min-h-[160px] flex flex-col md:flex-row items-stretch justify-between overflow-hidden">
-        {/* Car Photo Frame with Overlay */}
+      <div className="relative bg-slate-900 text-white min-h-[140px] flex flex-col md:flex-row items-stretch justify-between overflow-hidden">
+        {/* Car Photo Frame with neutral dark scrim */}
         <div className="absolute inset-0 md:relative md:w-2/5 shrink-0 overflow-hidden">
           <img
             src={selectedCategory.image}
             alt={selectedCategory.label}
-            className="w-full h-full object-cover object-center brightness-[0.75] md:brightness-95 contrast-105"
+            className="w-full h-full object-cover object-center brightness-[0.8] contrast-105"
             loading="lazy"
           />
-          {/* taste-skill-ignore: neutral scrim over car photography */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/40 to-transparent md:bg-gradient-to-r md:from-transparent md:to-slate-900" />
+          {/* taste-skill-ignore: neutral scrim over photo */}
+          <div className="absolute inset-0 bg-slate-950/70 md:bg-slate-950/30" />
         </div>
 
         {/* Banner Content & Category Switcher */}
         <div className="relative z-10 flex-1 p-5 sm:p-6 flex flex-col justify-between">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-                <Car className="w-3.5 h-3.5 text-blue-400" />
-                <span>Configurazione Preventivo Auto</span>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
+                <Car className="w-3.5 h-3.5 text-slate-300" />
+                <span>Parametri contrattuali del veicolo</span>
               </div>
-              <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white mt-1">
+              <h2 className="text-lg font-bold tracking-tight text-white mt-1">
                 {inputs.scenarioName || 'Preventivo Concessionaria'}
               </h2>
             </div>
@@ -139,8 +135,8 @@ export function TopVehicleBar({
             {/* Opportunity Cost & Mode Controls */}
             <div className="flex items-center gap-2">
               {!isSimpleMode && (
-                <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700 cursor-pointer select-none text-xs text-slate-300">
-                  <span>Costo Opportunità {instrumentName}</span>
+                <label className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 cursor-pointer select-none text-xs text-slate-300 transition-colors">
+                  <span>Costo opportunità {instrumentName}</span>
                   <input
                     type="checkbox"
                     checked={inputs.includeOpportunityCost}
@@ -154,20 +150,20 @@ export function TopVehicleBar({
                 <button
                   type="button"
                   onClick={onToggleSimpleMode}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 cursor-pointer transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 cursor-pointer transition-colors"
                 >
                   <SlidersHorizontal className="w-3.5 h-3.5" />
-                  <span>Dati Avanzati</span>
+                  <span>Dati avanzati</span>
                 </button>
               ) : (
                 <button
                   type="button"
                   onClick={() => setIsDetailsOpen((prev) => !prev)}
                   aria-expanded={isDetailsOpen}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 cursor-pointer transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 cursor-pointer transition-colors"
                 >
                   <Receipt className="w-3.5 h-3.5" />
-                  <span>Spese Accessorie</span>
+                  <span>Spese accessorie</span>
                   {isDetailsOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </button>
               )}
@@ -175,8 +171,8 @@ export function TopVehicleBar({
           </div>
 
           {/* Quick Category Buttons */}
-          <div className="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center gap-2">
-            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mr-1">
+          <div className="mt-4 pt-3 border-t border-slate-800 flex flex-wrap items-center gap-2">
+            <span className="text-xs text-slate-400 font-medium mr-1">
               Segmento:
             </span>
             {VEHICLE_CATEGORIES.map((cat) => {
@@ -188,8 +184,8 @@ export function TopVehicleBar({
                   onClick={() => handleSelectCategory(cat)}
                   className={`px-2.5 py-1 rounded text-xs font-medium transition-colors cursor-pointer ${
                     isActive
-                      ? 'bg-blue-600 text-white font-semibold'
-                      : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300'
+                      ? 'bg-white text-slate-900 font-semibold'
+                      : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
                   }`}
                 >
                   {cat.label}
@@ -201,16 +197,16 @@ export function TopVehicleBar({
       </div>
 
       {/* Main Controls Grid */}
-      <div className={`grid grid-cols-1 sm:grid-cols-2 ${isSimpleMode ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-5 p-5 sm:p-6 bg-white`}>
+      <div className={`grid grid-cols-1 sm:grid-cols-2 ${isSimpleMode ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-4 p-5 sm:p-6 bg-white`}>
         {/* 1. Prezzo Auto Contanti */}
         <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-3">
           <div className="space-y-1.5">
             <label
               htmlFor="input-carPriceCash"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700"
             >
-              <Car className="w-3.5 h-3.5 text-slate-600" />
-              <span>Prezzo di Listino (&euro;)</span>
+              <Car className="w-3.5 h-3.5 text-slate-500" />
+              <span>Prezzo di listino (€)</span>
             </label>
             <NumericInput
               id="input-carPriceCash"
@@ -222,7 +218,7 @@ export function TopVehicleBar({
               suffix="€"
               onChange={(val) => onUpdateInputs({ carPriceCash: val })}
               className="w-full"
-              inputClassName="text-base py-1.5 font-bold text-slate-900 bg-white"
+              inputClassName="text-base py-1 font-bold text-slate-900 bg-white"
             />
           </div>
 
@@ -238,9 +234,9 @@ export function TopVehicleBar({
               className="w-full fintech-slider"
             />
             <div className="flex justify-between text-[11px] text-slate-400 tabular-nums">
-              <span>8.000 &euro;</span>
-              <span>Digita qualsiasi valore</span>
-              <span>80.000 &euro;</span>
+              <span>8.000 €</span>
+              <span>Listino ufficiale</span>
+              <span>80.000 €</span>
             </div>
           </div>
         </div>
@@ -251,19 +247,19 @@ export function TopVehicleBar({
             <div className="flex items-center justify-between">
               <label
                 htmlFor="input-financingDiscount"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wide"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700"
               >
-                <Tag className="w-3.5 h-3.5 text-slate-600" />
-                <span>Sconto Concessionaria</span>
+                <Tag className="w-3.5 h-3.5 text-slate-500" />
+                <span>Sconto concessionaria</span>
               </label>
-              <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[11px] font-bold tabular-nums">
+              <span className="text-[11px] font-semibold text-emerald-800 tabular-nums">
                 -{formatEuro(inputs.financingDiscount, 2)}
               </span>
             </div>
             
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <span className="text-[10px] text-slate-500 font-medium block">Sconto (&euro;)</span>
+                <span className="text-[11px] text-slate-500 font-normal block">Sconto (€)</span>
                 <NumericInput
                   id="input-financingDiscount"
                   value={inputs.financingDiscount}
@@ -278,7 +274,7 @@ export function TopVehicleBar({
                 />
               </div>
               <div>
-                <span className="text-[10px] text-slate-500 font-medium block">Prezzo Promo (&euro;)</span>
+                <span className="text-[11px] text-slate-500 font-normal block">Prezzo promo (€)</span>
                 <NumericInput
                   id="input-promoPriceDirect"
                   value={promoPrice}
@@ -311,7 +307,7 @@ export function TopVehicleBar({
             />
             <div className="flex items-center justify-between text-[11px] text-slate-500 tabular-nums">
               <span>Prezzo scontato netto:</span>
-              <span className="font-bold text-slate-800">{formatEuro(promoPrice, 2)}</span>
+              <span className="font-semibold text-slate-900">{formatEuro(promoPrice, 2)}</span>
             </div>
           </div>
         </div>
@@ -321,10 +317,10 @@ export function TopVehicleBar({
           <div className="space-y-1.5">
             <label
               htmlFor="input-downPaymentCash"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 uppercase tracking-wide"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700"
             >
-              <Wallet className="w-3.5 h-3.5 text-slate-600" />
-              <span>Anticipo Iniziale Cash (&euro;)</span>
+              <Wallet className="w-3.5 h-3.5 text-slate-500" />
+              <span>Anticipo iniziale (cash)</span>
             </label>
             <div className="flex items-center justify-between gap-2">
               <NumericInput
@@ -337,10 +333,10 @@ export function TopVehicleBar({
                 suffix="€"
                 onChange={(val) => onUpdateInputs({ downPaymentCash: val })}
                 className="flex-1"
-                inputClassName="text-base py-1.5 font-bold text-slate-900 bg-white"
+                inputClassName="text-base py-1 font-bold text-slate-900 bg-white"
               />
               <div className="text-right shrink-0">
-                <div className="text-xs font-bold text-slate-800 tabular-nums">
+                <div className="text-xs font-semibold text-slate-700 tabular-nums">
                   Totale: {formatEuro(totalUpfront, 2)}
                 </div>
               </div>
@@ -366,7 +362,7 @@ export function TopVehicleBar({
               <button
                 type="button"
                 onClick={() => setIsDetailsOpen(true)}
-                className="text-blue-700 hover:underline font-semibold cursor-pointer"
+                className="text-slate-700 hover:text-slate-900 underline font-medium cursor-pointer"
               >
                 + Permuta: {formatEuro(inputs.tradeInValue, 2)}
               </button>
@@ -376,12 +372,11 @@ export function TopVehicleBar({
 
         {/* 4. Rata e Maxirata della Concessionaria */}
         {isSimpleMode ? (
-          <div className="p-4 rounded-lg bg-slate-100 border border-slate-300 flex flex-col justify-between space-y-3">
+          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-3">
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <label className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-800 uppercase tracking-wide">
-                  <Coins className="w-3.5 h-3.5 text-slate-700" />
-                  <span>Proposta Concessionaria</span>
+                <label className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700">
+                  <span>Proposta concessionaria</span>
                 </label>
                 <div className="flex gap-1">
                   {[36, 48].map((m) => (
@@ -394,10 +389,10 @@ export function TopVehicleBar({
                           maxirataInterimCount: m === 36 ? 35 : m,
                         })
                       }
-                      className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer transition-colors ${
+                      className={`px-2 py-0.5 rounded text-[11px] font-medium cursor-pointer transition-colors ${
                         inputs.maxirataMonths === m
-                          ? 'bg-slate-900 text-white'
-                          : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
+                          ? 'bg-slate-900 text-white font-semibold'
+                          : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
                       }`}
                     >
                       {m} mesi
@@ -408,7 +403,7 @@ export function TopVehicleBar({
 
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <div>
-                  <span className="text-[10px] text-slate-600 font-medium block">Rata Preventivo (€/m)</span>
+                  <span className="text-[11px] text-slate-500 font-normal block">Rata preventivo (€/m)</span>
                   <NumericInput
                     id="simple-monthly-inst"
                     value={inputs.maxirataCustomMonthlyInstallment || 0}
@@ -424,11 +419,11 @@ export function TopVehicleBar({
                       })
                     }
                     className="w-full"
-                    inputClassName="text-sm py-1 font-bold text-slate-900 bg-white border-slate-300"
+                    inputClassName="text-sm py-1 font-bold text-slate-900 bg-white"
                   />
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-600 font-medium block">Maxirata Finale VFG (€)</span>
+                  <span className="text-[11px] text-slate-500 font-normal block">Maxirata finale VFG (€)</span>
                   <NumericInput
                     id="simple-maxirata-amount"
                     value={
@@ -452,13 +447,13 @@ export function TopVehicleBar({
                       });
                     }}
                     className="w-full"
-                    inputClassName="text-sm py-1 font-bold text-slate-900 bg-white border-slate-300"
+                    inputClassName="text-sm py-1 font-bold text-slate-900 bg-white"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-slate-600 pt-1 border-t border-slate-200">
+            <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 border-t border-slate-200">
               <span>{inputs.maxirataMonths} mesi ({inputs.maxirataInterimCount || inputs.maxirataMonths} rate)</span>
               <span className="font-semibold text-slate-800">
                 TAN {inputs.maxirataTan ?? 0}% • TAEG {inputs.maxirataTaeg}%
@@ -466,15 +461,15 @@ export function TopVehicleBar({
             </div>
           </div>
         ) : (
-          /* Rendimento Annuo Lordo BTP in Modalità Avanzata */
-          <div className="p-4 rounded-lg bg-amber-50/70 border border-amber-200 flex flex-col justify-between space-y-3">
+          /* Rendimento Annuo Lordo Titolo in Modalità Avanzata */
+          <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-3">
             <div className="space-y-1.5">
               <label
                 htmlFor="input-btpGrossYield"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-900 uppercase tracking-wide"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700"
               >
-                <TrendingUp className="w-3.5 h-3.5 text-amber-700" />
-                <span>Rendimento Lordo {instrumentName}</span>
+                <TrendingUp className="w-3.5 h-3.5 text-slate-500" />
+                <span>Rendimento lordo {instrumentName}</span>
               </label>
               <div className="flex items-center justify-between gap-2">
                 <NumericInput
@@ -487,9 +482,9 @@ export function TopVehicleBar({
                   suffix="%"
                   onChange={(val) => onUpdateInputs({ btpGrossYield: val })}
                   className="flex-1"
-                  inputClassName="text-base py-1.5 text-amber-950 font-bold bg-white border-amber-300"
+                  inputClassName="text-base py-1 text-slate-900 font-bold bg-white"
                 />
-                <span className="px-2 py-1 rounded bg-amber-100 text-amber-900 text-xs font-bold tabular-nums shrink-0">
+                <span className="text-xs font-semibold text-slate-700 tabular-nums shrink-0">
                   Netto: {formatPercent(netAnnualBtpYield, 2)}
                 </span>
               </div>
@@ -504,12 +499,12 @@ export function TopVehicleBar({
                 step={0.1}
                 value={Math.min(7, Math.max(0, inputs.btpGrossYield))}
                 onChange={(e) => onUpdateInputs({ btpGrossYield: Number(e.target.value) })}
-                className="w-full fintech-slider slider-amber"
+                className="w-full fintech-slider"
               />
-              <div className="flex items-center justify-between text-[11px] text-amber-800 tabular-nums">
+              <div className="flex items-center justify-between text-[11px] text-slate-500 tabular-nums">
                 <span>0%</span>
-                <span className="font-semibold">
-                  Tassa{' '}
+                <span className="font-medium">
+                  Ritenuta{' '}
                   {inputs.taxRegime === 'btp_12_5'
                     ? '12,5%'
                     : inputs.taxRegime === 'deposito_26'
@@ -525,16 +520,16 @@ export function TopVehicleBar({
 
       {/* Drawer Spese Accessorie & Polizze */}
       {isDetailsOpen && (
-        <div className="p-5 sm:p-6 bg-slate-50 border-t border-slate-200">
+        <div className="p-5 sm:p-6 bg-slate-50/75 border-t border-slate-200">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div className="flex items-center gap-2">
-              <Receipt className="w-4 h-4 text-slate-700" />
-              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800">
-                Spese Accessorie, Polizze &amp; Valore Futuro Garantito
+              <Receipt className="w-4 h-4 text-slate-600" />
+              <h3 className="text-xs sm:text-sm font-semibold text-slate-900">
+                Spese accessorie, polizze &amp; Valore Futuro Garantito
               </h3>
             </div>
             <span className="text-xs text-slate-500">
-              Personalizza i costi accessori previsti dal foglio SECCI
+              Personalizza i costi accessori previsti dal foglio informativo SECCI
             </span>
           </div>
 
@@ -542,9 +537,9 @@ export function TopVehicleBar({
             {/* Permuta Usato */}
             <div className="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
               <div className="flex items-center justify-between">
-                <label htmlFor="detail-tradeInValue" className="text-xs font-semibold text-slate-700 inline-flex items-center gap-1.5">
-                  <RefreshCw className="w-3.5 h-3.5 text-blue-600" />
-                  <span>Valore Permuta Usato (&euro;)</span>
+                <label htmlFor="detail-tradeInValue" className="text-xs font-medium text-slate-700 inline-flex items-center gap-1.5">
+                  <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Valore permuta usato (€)</span>
                 </label>
                 <span className="text-xs font-bold text-slate-900 tabular-nums">
                   {formatEuro(inputs.tradeInValue)}
@@ -579,8 +574,8 @@ export function TopVehicleBar({
             {/* Spese Istruttoria */}
             <div className="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
               <div className="flex items-center justify-between">
-                <label htmlFor="detail-originationFee" className="text-xs font-semibold text-slate-700">
-                  Istruttoria Pratica (&euro;)
+                <label htmlFor="detail-originationFee" className="text-xs font-medium text-slate-700">
+                  Istruttoria pratica (€)
                 </label>
                 <span className="text-xs font-bold text-slate-900 tabular-nums">
                   {formatEuro(inputs.originationFee)}
@@ -615,8 +610,8 @@ export function TopVehicleBar({
             {/* Spese Incasso Rata */}
             <div className="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
               <div className="flex items-center justify-between">
-                <label htmlFor="detail-monthlyCollectionFee" className="text-xs font-semibold text-slate-700">
-                  Incasso Rata Mensile (&euro;/m)
+                <label htmlFor="detail-monthlyCollectionFee" className="text-xs font-medium text-slate-700">
+                  Incasso rata mensile (€/m)
                 </label>
                 <span className="text-xs font-bold text-slate-900 tabular-nums">
                   {formatEuro(inputs.monthlyCollectionFee, 2)}
@@ -651,8 +646,8 @@ export function TopVehicleBar({
             {/* Imposta di Bollo */}
             <div className="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
               <div className="flex items-center justify-between">
-                <label htmlFor="detail-stampDuty" className="text-xs font-semibold text-slate-700">
-                  Imposta di Bollo (&euro;)
+                <label htmlFor="detail-stampDuty" className="text-xs font-medium text-slate-700">
+                  Imposta di bollo (€)
                 </label>
                 <span className="text-xs font-bold text-slate-900 tabular-nums">
                   {formatEuro(inputs.stampDuty, 2)}
@@ -687,8 +682,8 @@ export function TopVehicleBar({
             {/* Polizze Obbligatorie */}
             <div className="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
               <div className="flex items-center justify-between">
-                <label htmlFor="detail-mandatoryInsuranceMonthly" className="text-xs font-semibold text-slate-700">
-                  Polizze nel Finanziamento (&euro;/m)
+                <label htmlFor="detail-mandatoryInsuranceMonthly" className="text-xs font-medium text-slate-700">
+                  Polizze accessorie (€/m)
                 </label>
                 <span className="text-xs font-bold text-slate-900 tabular-nums">
                   {formatEuro(inputs.mandatoryInsuranceMonthly, 2)}
@@ -723,8 +718,8 @@ export function TopVehicleBar({
             {/* Maxirata VFG Custom */}
             <div className="bg-white p-3.5 rounded-lg border border-slate-200 space-y-2">
               <div className="flex items-center justify-between">
-                <label htmlFor="detail-maxirataAmount" className="text-xs font-semibold text-slate-700">
-                  Maxirata Finale VFG
+                <label htmlFor="detail-maxirataAmount" className="text-xs font-medium text-slate-700">
+                  Maxirata finale VFG
                 </label>
                 <span className="text-xs font-bold text-slate-900 tabular-nums">
                   {inputs.maxirataPercent}% listino

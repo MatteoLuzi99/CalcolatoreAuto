@@ -11,73 +11,41 @@ export const Logo: React.FC<LogoProps> = ({
   showSubtitle = true,
   className = '',
 }) => {
-  const iconDimensions = {
-    sm: 'w-7 h-7',
-    md: 'w-10 h-10',
-    lg: 'w-12 h-12',
+  const iconSize = {
+    sm: 'w-6 h-6',
+    md: 'w-8 h-8',
+    lg: 'w-10 h-10',
   }[size];
 
   const titleSize = {
-    sm: 'text-sm font-extrabold',
-    md: 'text-lg sm:text-xl font-extrabold',
-    lg: 'text-2xl font-black',
+    sm: 'text-sm font-bold',
+    md: 'text-base sm:text-lg font-bold',
+    lg: 'text-xl sm:text-2xl font-extrabold',
   }[size];
 
   return (
-    <div className={`inline-flex items-center gap-3 select-none ${className}`}>
-      {/* Dynamic SVG Icon Badge */}
+    <div className={`inline-flex items-center gap-2.5 select-none ${className}`}>
+      {/* Precision Geometric Monogram */}
       <div
-        className={`${iconDimensions} rounded-xl bg-slate-900 flex items-center justify-center p-2 shadow-sm shrink-0 border border-slate-800`}
+        className={`${iconSize} rounded bg-slate-950 text-white flex items-center justify-center shrink-0 font-bold tracking-tighter text-xs`}
+        aria-hidden="true"
       >
-        <svg
-          viewBox="0 0 64 64"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full"
-        >
-          {/* Green Growth Trend */}
-          <path
-            d="M14 44L26 34L36 40L50 22"
-            stroke="#10B981"
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M42 22H50V30"
-            stroke="#10B981"
-            strokeWidth="5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* Blue Car Body */}
-          <path
-            d="M12 46C12 43.8 13.8 42 16 42H48C50.2 42 52 43.8 52 46V49H12V46Z"
-            fill="#3B82F6"
-          />
-          <path d="M19 42L24.5 32H39.5L45 42H19Z" fill="#60A5FA" />
-          <circle cx="21" cy="50" r="4.5" fill="#0F172A" stroke="#94A3B8" strokeWidth="2.5" />
-          <circle cx="43" cy="50" r="4.5" fill="#0F172A" stroke="#94A3B8" strokeWidth="2.5" />
-          <circle cx="21" cy="50" r="1.5" fill="#60A5FA" />
-          <circle cx="43" cy="50" r="1.5" fill="#60A5FA" />
-        </svg>
+        <span className="font-bold text-white text-xs tracking-tight">AF</span>
       </div>
 
-      {/* Brand Typography */}
+      {/* Brand Wordmark */}
       <div className="leading-tight">
-        <div className={`${titleSize} tracking-tight text-slate-900 flex items-center gap-1.5`}>
+        <div className={`${titleSize} tracking-tight text-slate-950 flex items-center gap-1.5`}>
           <span>AutoFin</span>
-          <span className="text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-1.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider">
-            BTP
-          </span>
+          <span className="text-slate-400 font-light">/</span>
+          <span className="text-slate-900 font-semibold">BTP</span>
         </div>
         {showSubtitle && (
-          <span className="text-[11px] text-slate-500 font-medium tracking-normal block mt-0.5">
-            Calcolatore Costo Reale Auto
+          <span className="text-[11px] text-slate-500 font-normal tracking-tight block mt-0.5">
+            Calcolo Matematico Costo Reale Auto
           </span>
         )}
       </div>
     </div>
   );
 };
-

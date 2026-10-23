@@ -1,4 +1,4 @@
-import { CalculatorInputs, MonthlyTimelinePoint, SavedScenario } from '../types/calculator';
+import type { CalculatorInputs, MonthlyTimelinePoint, SavedScenario } from '../types/calculator';
 import { DEFAULT_INPUTS } from './financialEngine';
 
 const STORAGE_KEY = 'calcolatore_auto_btp_scenarios_v1';

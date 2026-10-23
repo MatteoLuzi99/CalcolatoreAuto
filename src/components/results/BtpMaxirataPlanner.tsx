@@ -73,7 +73,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
           <PiggyBank className="w-6 h-6 text-emerald-700 shrink-0 mt-1" />
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+              <span className="text-xs font-semibold text-emerald-800">
                 Strategia Salvadanaio VFG
               </span>
               <span className="text-xs text-slate-500">
@@ -98,7 +98,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
         <div className="flex flex-col sm:items-end shrink-0">
           <label
             htmlFor="btp-tax-regime-select"
-            className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1"
+            className="text-[11px] font-medium text-slate-500 mb-1"
           >
             Strumento &amp; Tassazione
           </label>
@@ -121,14 +121,14 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
 
       {/* Rata Concessionaria vs Quota BTP Personale */}
       <div className="rounded-lg bg-slate-50 border border-slate-200 p-4 sm:p-5 space-y-3">
-        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+        <h3 className="text-xs font-semibold text-slate-900">
           Scomposizione Flussi: Rata Versata alla Concessionaria vs Quota Risparmiata per Te
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-          <div className="bg-white/90 rounded-xl p-3.5 border border-amber-200 shadow-xs flex flex-col justify-between">
+          <div className="bg-white rounded-lg p-3.5 border border-amber-200 flex flex-col justify-between">
             <div>
-              <span className="font-bold text-amber-900 block text-xs uppercase tracking-wider mb-1">
+              <span className="font-semibold text-amber-900 block text-xs mb-1">
                 A) Rata Pagata alla Finanziaria
               </span>
               <div className="text-xl font-extrabold text-amber-800 tabular-nums">
@@ -142,9 +142,9 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
             </p>
           </div>
 
-          <div className="bg-white/90 rounded-xl p-3.5 border border-emerald-300 shadow-xs flex flex-col justify-between">
+          <div className="bg-white rounded-lg p-3.5 border border-emerald-300 flex flex-col justify-between">
             <div>
-              <span className="font-bold text-emerald-900 block text-xs uppercase tracking-wider mb-1">
+              <span className="font-semibold text-emerald-900 block text-xs mb-1">
                 B) Quota da Investire TU A PARTE
               </span>
               <div className="text-xl font-extrabold text-emerald-700 tabular-nums">
@@ -159,9 +159,9 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
             </p>
           </div>
 
-          <div className="bg-white/90 rounded-xl p-3.5 border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div className="bg-white rounded-lg p-3.5 border border-slate-200 flex flex-col justify-between">
             <div>
-              <span className="font-bold text-slate-900 block text-xs uppercase tracking-wider mb-1">
+              <span className="font-semibold text-slate-900 block text-xs mb-1">
                 C) Il Tuo Obiettivo al Mese {maxirata.months}
               </span>
               <div className="text-xl font-extrabold text-slate-900 tabular-nums">
@@ -284,8 +284,8 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
         {/* KPI 1: Quota Mensile da Investire */}
         <div className="rounded-xl border border-emerald-200/90 bg-emerald-50/40 p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-emerald-800">
-              <span>1. Quota Mensile PAC {instrumentName}</span>
+            <div className="flex items-center justify-between text-xs font-semibold text-emerald-800">
+              <span>1. Quota mensile PAC {instrumentName}</span>
               <Coins className="w-4 h-4 text-emerald-600" />
             </div>
 
@@ -311,8 +311,8 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
           </div>
 
           <div className="mt-4 pt-3 border-t border-emerald-200/70">
-            <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-              Impegno Mensile Totale Reale
+            <div className="text-[11px] font-medium text-slate-500">
+              Impegno mensile totale reale
             </div>
             <div className="mt-1 flex flex-wrap items-center justify-between gap-1 text-xs font-bold text-slate-900 tabular-nums">
               <span>
@@ -330,8 +330,8 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
         {/* KPI 2: Capitale Versato vs Guadagno Netto */}
         <div className="rounded-xl border border-slate-200 bg-white p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-700">
-              <span>2. Capitale vs Interessi {instrumentName}</span>
+            <div className="flex items-center justify-between text-xs font-semibold text-slate-700">
+              <span>2. Capitale vs interessi {instrumentName}</span>
               <TrendingUp className="w-4 h-4 text-emerald-600" />
             </div>
 
@@ -386,8 +386,8 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
         {/* KPI 3: Confronto con la "Trappola del Rifinanziamento" */}
         <div className="rounded-xl border border-rose-200 bg-rose-50/40 p-5 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-rose-800">
-              <span>3. Trappola Rifinanziamento</span>
+            <div className="flex items-center justify-between text-xs font-semibold text-rose-800">
+              <span>3. Trappola rifinanziamento</span>
               <AlertTriangle className="w-4 h-4 text-rose-600" />
             </div>
 

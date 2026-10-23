@@ -45,9 +45,9 @@ function TimelineCustomTooltip({
   const isMaxirataTarget = monthNum === maxirataMonth;
 
   return (
-    <div className="rounded-lg border border-slate-300 bg-white p-3 shadow-md">
+    <div className="rounded-lg border border-slate-300 bg-white p-3">
       <div className="mb-2 flex items-center justify-between gap-4 border-b border-slate-100 pb-1.5">
-        <span className="text-xs font-semibold tracking-wide text-slate-700 uppercase">
+        <span className="text-xs font-semibold text-slate-700">
           Mese {label}
           {monthNum > 0 ? ` (${(monthNum / 12).toFixed(1).replace('.0', '')} anni)` : ' (Oggi)'}
         </span>
@@ -87,7 +87,7 @@ function BreakdownCustomTooltip({ active, payload, label }: CustomTooltipProps) 
   if (!active || !payload || payload.length === 0) return null;
 
   return (
-    <div className="rounded-lg border border-slate-300 bg-white p-3 shadow-md">
+    <div className="rounded-lg border border-slate-300 bg-white p-3">
       <p className="mb-2 border-b border-slate-100 pb-1.5 text-xs font-semibold text-slate-800">
         {label}
       </p>
@@ -218,13 +218,13 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
   return (
     <section
       aria-label="Analisi Approfondita e Piano di Ammortamento"
-      className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-sm"
+      className="rounded-lg border border-slate-200 bg-white p-4 sm:p-6"
     >
       {/* Header & Selettore 3 Tab */}
-      <div className="flex flex-col gap-4 border-b border-slate-200/80 pb-5 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 border-b border-slate-200 pb-5 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <span className="text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
-            Analisi Quantitativa & Flussi di Cassa
+          <span className="text-xs font-medium text-slate-500">
+            Analisi quantitativa &amp; flussi di cassa
           </span>
           <h2 className="mt-0.5 text-base sm:text-lg font-bold tracking-tight text-slate-900">
             Confronto Temporale, Scomposizione Costi e Ammortamento
@@ -384,7 +384,7 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
                   type="monotone"
                   dataKey="standardCumulativeOut"
                   name="Esborso Cum. Standard"
-                  stroke="#2563EB"
+                  stroke="#1d5fbf"
                   strokeWidth={2.2}
                   dot={false}
                 />
@@ -533,7 +533,7 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
                 <Bar
                   dataKey="rendimentoBtp"
                   name={`Risparmio / Rendimento Netto ${instrumentName}`}
-                  fill="#10B981"
+                  fill="#2e7d32"
                   radius={[6, 6, 0, 0]}
                   maxBarSize={48}
                 />
@@ -712,7 +712,7 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
           {/* Tabella con header sticky e tabular-nums */}
           <div className="max-h-[460px] overflow-auto rounded-xl border border-slate-200/90">
             <table className="w-full min-w-[700px] border-collapse text-left text-xs tabular-nums">
-              <thead className="sticky top-0 z-10 bg-slate-100/95 text-[11px] font-semibold tracking-wider text-slate-600 uppercase backdrop-blur-xs">
+              <thead className="sticky top-0 z-10 bg-slate-100 text-xs font-semibold text-slate-700">
                 <tr className="border-b border-slate-200">
                   <th className="py-3 pr-3 pl-4">Mese</th>
                   {columnFocus !== 'btp_focus' && (
@@ -753,7 +753,7 @@ export function DeepDiveTabs({ calc }: { calc: FullCalculationOutput }) {
                         <div className="flex items-center gap-2">
                           <span>Mese {pt.month}</span>
                           {isMaxirataTargetMonth && (
-                            <span className="inline-flex items-center rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase shadow-2xs">
+                            <span className="inline-flex items-center rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-bold text-white">
                               100% Maxirata
                             </span>
                           )}

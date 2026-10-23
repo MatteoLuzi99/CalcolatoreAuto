@@ -30,7 +30,7 @@
     --ground: #F8FAFC;
     --ink: #0F172A;
     --ink-muted: #475569;
-    --accent: #1D4ED8;
+    --accent: #1d5fbf;
     --accent-copper: #B45309;
   }
 
@@ -67,7 +67,7 @@ input[type="range"].fintech-slider::-webkit-slider-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #1D4ED8;
+  background: #1d5fbf;
   cursor: pointer;
   border: 2px solid #FFFFFF;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2);
@@ -82,7 +82,7 @@ input[type="range"].fintech-slider::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #1D4ED8;
+  background: #1d5fbf;
   cursor: pointer;
   border: 2px solid #FFFFFF;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2);

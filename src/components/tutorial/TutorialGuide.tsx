@@ -104,8 +104,8 @@ export const TutorialGuide: React.FC<TutorialGuideProps> = ({
       description: 'Come evitare la trappola del rifinanziamento con il Salvadanaio BTP.',
       content: (
         <div className="space-y-4 text-xs text-slate-600 leading-relaxed">
-          <div className="p-3.5 rounded-xl bg-gradient-to-r from-amber-500/10 to-emerald-500/10 border border-amber-300">
-            <span className="font-extrabold text-slate-900 block text-sm">
+          <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200">
+            <span className="font-bold text-slate-900 block text-sm">
               Attenzione alla differenza fondamentale tra le due uscite mensili:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
@@ -192,7 +192,7 @@ export const TutorialGuide: React.FC<TutorialGuideProps> = ({
   const current = steps.find((s) => s.step === activeStep) || steps[0];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-sm space-y-6">
+    <div className="bg-white rounded-lg border border-slate-200 p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
         <div className="flex items-start gap-3.5">
@@ -201,11 +201,11 @@ export const TutorialGuide: React.FC<TutorialGuideProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
-                Guida Passo-Passo
+              <span className="text-xs font-semibold text-slate-500">
+                Guida passo-passo
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-100 text-blue-800">
-                Tutorial Interattivo
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-800">
+                Tutorial interattivo
               </span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
@@ -267,7 +267,7 @@ export const TutorialGuide: React.FC<TutorialGuideProps> = ({
       <div className="p-4 sm:p-6 rounded-2xl bg-slate-50/60 border border-slate-200/80 space-y-4">
         <div className="flex items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-700 block">
+            <span className="text-xs font-semibold text-slate-500 block">
               {current.badge}
             </span>
             <h3 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5">{current.title}</h3>

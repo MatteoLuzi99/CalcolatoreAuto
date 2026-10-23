@@ -1,4 +1,4 @@
-import { TaxRegime } from '../types/calculator';
+import type { TaxRegime } from '../types/calculator';
 
 export interface FinancialInstrument {
   id: string;

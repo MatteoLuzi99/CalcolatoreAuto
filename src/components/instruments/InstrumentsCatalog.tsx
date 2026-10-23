@@ -59,15 +59,15 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner & Context */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-6 shadow-sm">
+      <div className="bg-white rounded-lg border border-slate-200 p-4 sm:p-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
           <div className="flex items-start gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600 shrink-0">
-              <TrendingUp className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-800 shrink-0">
+              <TrendingUp className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-                Catalogo Strumenti di Risparmio &amp; Investimento
+              <span className="text-xs font-semibold text-slate-500">
+                Catalogo strumenti di risparmio &amp; investimento
               </span>
               <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
                 Rendimenti Storici Reali a 3 Anni a Confronto
@@ -79,9 +79,9 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
             </div>
           </div>
 
-          <div className="bg-emerald-50/80 border border-emerald-200/80 rounded-xl p-3 text-right shrink-0">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-800 block">
-              Tasso Attualmente Attivo
+          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-right shrink-0">
+            <span className="text-[11px] font-medium text-slate-500 block">
+              Tasso attualmente attivo
             </span>
             <div className="text-xl font-extrabold text-emerald-900 tabular-nums">
               {formatPercent(inputs.btpGrossYield, 2)} lordo
@@ -112,7 +112,7 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
       </div>
 
       {appliedFeedback && (
-        <div className="bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-sm text-xs font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 animate-fade-in">
+        <div className="bg-emerald-600 text-white px-4 py-3 rounded-lg text-xs font-bold flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 animate-fade-in">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 shrink-0" />
             <span>
@@ -124,7 +124,7 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
             <button
               type="button"
               onClick={onNavigateToSimulator}
-              className="bg-white text-emerald-800 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-emerald-50 transition-colors w-full sm:w-auto text-center"
+              className="bg-white text-emerald-800 px-3 py-1.5 rounded text-xs font-bold hover:bg-emerald-50 transition-colors w-full sm:w-auto text-center cursor-pointer"
             >
               Vai al Simulatore &rarr;
             </button>
@@ -140,20 +140,20 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
           return (
             <div
               key={instrument.id}
-              className={`rounded-2xl bg-white p-5 flex flex-col justify-between transition-all border ${
+              className={`rounded-lg bg-white p-5 flex flex-col justify-between transition-colors border ${
                 isSelected
-                  ? 'border-2 border-emerald-500 ring-4 ring-emerald-500/10 shadow-md'
-                  : 'border-slate-200/90 shadow-sm hover:border-slate-300'
+                  ? 'border-2 border-emerald-600'
+                  : 'border-slate-200 hover:border-slate-300'
               }`}
             >
               <div className="space-y-3.5">
                 {/* Category & Suitability Badges */}
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                  <span className="text-[11px] font-medium text-slate-500">
                     {instrument.categoryLabel}
                   </span>
                   <span
-                    className={`text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full ${instrument.suitabilityBadgeColor}`}
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded ${instrument.suitabilityBadgeColor}`}
                   >
                     {instrument.suitabilityLabel}
                   </span>
@@ -250,11 +250,11 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
         })}
 
         {/* Custom / Personalizzato Card */}
-        <div className="rounded-2xl bg-white border border-slate-200/90 p-5 shadow-sm flex flex-col justify-between">
+        <div className="rounded-lg bg-white border border-slate-200 p-5 flex flex-col justify-between">
           <div className="space-y-3.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">
-                Opzione Personalizzata
+              <span className="text-[11px] font-semibold text-slate-700">
+                Opzione personalizzata
               </span>
               <span className="text-[10px] font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
                 Custom

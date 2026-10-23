@@ -95,7 +95,7 @@ export const NumericInput: React.FC<NumericInputProps> = ({
 
   return (
     <div
-      className={`inline-flex items-center rounded-lg border border-slate-300 hover:border-slate-400 bg-white shadow-2xs transition-all focus-within:ring-2 focus-within:ring-blue-500/25 focus-within:border-blue-600 ${className} ${inputClassName}`}
+      className={`inline-flex items-center rounded-lg border border-slate-300 hover:border-slate-400 bg-white transition-colors focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600 ${className} ${inputClassName}`}
     >
       {prefix && (
         <span className="pointer-events-none pl-2 text-xs font-bold text-slate-400 select-none shrink-0">
