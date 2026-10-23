@@ -277,20 +277,21 @@ function sanitizeScenarioName(raw: string | null): string {
   return cleaned || DEFAULT_INPUTS.scenarioName;
 }
 
-/** Sanifica le celle CSV per proteggere da Formula / DDE Injection (Excel/Calc) */
+/** Sanifica le celle CSV per proteggere da Formula / DDE Injection (Excel/Calc - CWE-1236) */
 export function sanitizeCsvCell(value: string | number): string {
   if (typeof value === 'number') {
     return Number.isFinite(value) ? value.toFixed(2) : '0.00';
   }
-  const str = String(value ?? '');
-  // Se la stringa inizia con caratteri pericolosi per fogli di calcolo (=, +, -, @, \t, \r)
-  const isFormulaTrigger = /^[=+\-@\t\r]/.test(str);
+  // Rimuove a capo per prevenire frammentazione di righe CSV e normalizza spazi
+  const str = String(value ?? '').replace(/[\r\n]+/g, ' ');
+  // Rileva trigger formule (=, +, -, @, |, %) anche con spazi iniziali
+  const isFormulaTrigger = /^\s*[=+\-@|%]/.test(str);
   let safeStr = str.replace(/"/g, '""'); // escape delle virgolette doppie
   if (isFormulaTrigger) {
     safeStr = "'" + safeStr; // prepend apostrofo per forzare testo letterale
   }
-  // Racchiude tra doppi apici se contiene separatori o a capo
-  if (/[;"'\n\r]/.test(safeStr) || isFormulaTrigger) {
+  // Racchiude tra doppi apici se contiene separatori o trigger
+  if (/[;"']/.test(safeStr) || isFormulaTrigger) {
     return `"${safeStr}"`;
   }
   return safeStr;

@@ -403,7 +403,7 @@ export const BudgetGapSimulator: React.FC<BudgetGapSimulatorProps> = ({
                     0,00 €
                   </div>
                   <div className="text-xs text-emerald-800 font-semibold mt-1">
-                    🎉 La Maxirata è coperta al 100%!
+                    La Maxirata è coperta al 100%!
                   </div>
                   {currentSim.surplusAmount > 1 && (
                     <div className="mt-1 text-xs text-emerald-700 font-medium">

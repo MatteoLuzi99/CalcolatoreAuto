@@ -215,7 +215,8 @@ export const InstrumentsCatalog: React.FC<InstrumentsCatalogProps> = ({
                 <div className="pt-2 border-t border-slate-100 text-xs text-slate-600 space-y-1.5 leading-relaxed">
                   <p>{instrument.description}</p>
                   <p className="text-[11px] text-slate-500 italic bg-slate-50 p-2 rounded-lg border border-slate-100">
-                    💡 {instrument.advisoryNote}
+                    <span className="font-semibold text-slate-700 not-italic">Nota informativa: </span>
+                    {instrument.advisoryNote}
                   </p>
                 </div>
               </div>

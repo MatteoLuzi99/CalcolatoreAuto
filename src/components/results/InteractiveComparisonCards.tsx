@@ -41,6 +41,9 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
   const { inputs, cash, standard, maxirataNoBtp, maxirata, verdict } = calc;
   const instrumentName = inputs.selectedInstrumentName || 'BTP';
 
+  const [mobileActiveTab, setMobileActiveTab] = useState<WinnerOptionId>('maxirata');
+  const [mobileShowAll, setMobileShowAll] = useState(false);
+
   const [openDetails, setOpenDetails] = useState<Record<WinnerOptionId, boolean>>({
     cash: false,
     standard: false,
@@ -54,41 +57,79 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
 
   const getCardStyle = (id: WinnerOptionId) => {
     const isWinner = verdict.winner === id;
-    return `relative rounded-2xl bg-white p-5 sm:p-6 flex flex-col justify-between transition-all ${
+    const isVisible = mobileShowAll || mobileActiveTab === id;
+    return `rounded-xl bg-white p-5 sm:p-6 flex-col justify-between transition-colors ${
+      isVisible ? 'flex' : 'hidden xl:flex'
+    } ${
       isWinner
-        ? 'border-2 border-emerald-500 ring-4 ring-emerald-500/10 shadow-md'
-        : 'border border-slate-200/80 shadow-sm'
+        ? 'border-2 border-emerald-600 ring-1 ring-emerald-600'
+        : 'border border-slate-200'
     }`;
   };
 
   return (
     <section aria-label="Confronto interattivo delle 4 opzioni di acquisto">
+      {/* Mobile / Tablet Segmented Switcher */}
+      <div className="xl:hidden mb-4 bg-slate-100 p-1 rounded-xl flex items-center justify-between gap-1 overflow-x-auto no-scrollbar">
+        {[
+          { id: 'cash' as WinnerOptionId, label: 'Contanti' },
+          { id: 'standard' as WinnerOptionId, label: 'Standard' },
+          { id: 'maxirata_no_btp' as WinnerOptionId, label: 'Maxirata Sola' },
+          { id: 'maxirata' as WinnerOptionId, label: `Maxirata + ${instrumentName}` },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => {
+              setMobileActiveTab(tab.id);
+              setMobileShowAll(false);
+            }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer flex-1 text-center ${
+              !mobileShowAll && mobileActiveTab === tab.id
+                ? 'bg-slate-900 text-white'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            {tab.label}
+            {verdict.winner === tab.id && ' (Consigliata)'}
+          </button>
+        ))}
+        <button
+          type="button"
+          onClick={() => setMobileShowAll((prev) => !prev)}
+          className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
+            mobileShowAll ? 'bg-slate-900 text-white' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          {mobileShowAll ? 'Singola' : 'Tutte'}
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 items-stretch">
         {/* ================================================================= */}
         {/* CARD 1: ACQUISTO IN CONTANTI                                      */}
         {/* ================================================================= */}
         <article className={getCardStyle('cash')}>
-          {verdict.winner === 'cash' && (
-            <div className="-top-3.5 left-5 absolute inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-600 text-white shadow-sm">
-              <Award className="w-3.5 h-3.5" />
-              Scelta Più Conveniente
-            </div>
-          )}
-
           <div>
             {/* Card Header */}
             <div className="flex items-start justify-between gap-3 pb-4 border-b border-slate-100">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
-                  Opzione 1 • Zero Debiti
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+                    Opzione 1 • Zero Debiti
+                  </span>
+                  {verdict.winner === 'cash' && (
+                    <span className="px-2 py-0.5 rounded bg-emerald-700 text-white font-bold text-[10px] tracking-wide uppercase inline-flex items-center gap-1">
+                      <Award className="w-3 h-3" />
+                      Vincente
+                    </span>
+                  )}
+                </div>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">
                   Acquisto in Contanti
                 </h3>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
-                <Banknote className="w-5 h-5" />
-              </div>
+              <Banknote className="w-5 h-5 text-emerald-600 shrink-0 mt-1" />
             </div>
 
             {/* Hero Number */}
@@ -225,27 +266,26 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
         {/* CARD 2: FINANZIAMENTO STANDARD (RATE COSTANTI)                    */}
         {/* ================================================================= */}
         <article className={getCardStyle('standard')}>
-          {verdict.winner === 'standard' && (
-            <div className="-top-3.5 left-5 absolute inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-600 text-white shadow-sm">
-              <Award className="w-3.5 h-3.5" />
-              Scelta Più Conveniente
-            </div>
-          )}
-
           <div>
             {/* Card Header */}
             <div className="flex items-start justify-between gap-3 pb-4 border-b border-slate-100">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
-                  Opzione 2 • Rate Costanti
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-blue-700">
+                    Opzione 2 • Rate Costanti
+                  </span>
+                  {verdict.winner === 'standard' && (
+                    <span className="px-2 py-0.5 rounded bg-emerald-700 text-white font-bold text-[10px] tracking-wide uppercase inline-flex items-center gap-1">
+                      <Award className="w-3 h-3" />
+                      Vincente
+                    </span>
+                  )}
+                </div>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">
                   Finanziamento Classico
                 </h3>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shrink-0">
-                <Landmark className="w-5 h-5" />
-              </div>
+              <Landmark className="w-5 h-5 text-blue-600 shrink-0 mt-1" />
             </div>
 
             {/* Hero Number */}
@@ -488,38 +528,37 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
         {/* CARD 3: MAXIRATA SENZA BTP (CON SPUNTA RIFINANZIO VS SENZA)       */}
         {/* ================================================================= */}
         <article className={getCardStyle('maxirata_no_btp')}>
-          {verdict.winner === 'maxirata_no_btp' && (
-            <div className="-top-3.5 left-5 absolute inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-600 text-white shadow-sm">
-              <Award className="w-3.5 h-3.5" />
-              Scelta Più Conveniente
-            </div>
-          )}
-
           <div>
             {/* Card Header */}
             <div className="flex items-start justify-between gap-3 pb-4 border-b border-slate-100">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-purple-600">
-                  Opzione 3 • Concessionaria Sola
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                    Opzione 3 • Formula Balloon
+                  </span>
+                  {verdict.winner === 'maxirata_no_btp' && (
+                    <span className="px-2 py-0.5 rounded bg-emerald-700 text-white font-bold text-[10px] tracking-wide uppercase inline-flex items-center gap-1">
+                      <Award className="w-3 h-3" />
+                      Vincente
+                    </span>
+                  )}
+                </div>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">
                   Maxirata Senza {instrumentName}
                 </h3>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shrink-0">
-                <Car className="w-5 h-5" />
-              </div>
+              <Car className="w-5 h-5 text-slate-600 shrink-0 mt-1" />
             </div>
 
             {/* TOGGLE: Rifinanzio la Maxirata vs Senza Rifinanziamento (Saldo Cash) */}
             <div className="pt-3">
-              <div className="flex p-1 bg-slate-100 rounded-xl">
+              <div className="flex p-1 bg-slate-100 rounded-lg">
                 <button
                   type="button"
                   onClick={() => onUpdateInputs({ maxirataNoBtpMode: 'refinance' })}
-                  className={`flex-1 py-1.5 px-2 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                  className={`flex-1 py-1.5 px-2 text-[11px] font-semibold rounded-md transition-colors cursor-pointer ${
                     inputs.maxirataNoBtpMode !== 'pay_cash'
-                      ? 'bg-white text-purple-900 shadow-xs'
+                      ? 'bg-slate-900 text-white'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
@@ -528,9 +567,9 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 <button
                   type="button"
                   onClick={() => onUpdateInputs({ maxirataNoBtpMode: 'pay_cash' })}
-                  className={`flex-1 py-1.5 px-2 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                  className={`flex-1 py-1.5 px-2 text-[11px] font-semibold rounded-md transition-colors cursor-pointer ${
                     inputs.maxirataNoBtpMode === 'pay_cash'
-                      ? 'bg-white text-purple-900 shadow-xs'
+                      ? 'bg-slate-900 text-white'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
@@ -539,7 +578,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
               </div>
             </div>
 
-            {/* Hero Number (Clean Stacked Layout without squishing) */}
+            {/* Hero Number */}
             <div className="py-4 border-b border-slate-100">
               {inputs.maxirataNoBtpMode === 'pay_cash' ? (
                 <div className="space-y-1">
@@ -547,13 +586,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                     Rata 1° Periodo ({maxirataNoBtp.interimInstallmentsCount} rate)
                   </div>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-3xl font-extrabold text-purple-700 tabular-nums tracking-tight">
+                    <span className="text-3xl font-extrabold text-slate-900 tabular-nums tracking-tight">
                       {formatEuro(maxirataNoBtp.monthlyFinancingPaymentWithFees, 2)}
                     </span>
                     <span className="text-xs font-semibold text-slate-500">/mese</span>
                   </div>
                   <div className="pt-1">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-purple-50 text-purple-800 font-bold text-xs tabular-nums">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded bg-slate-100 text-slate-800 font-semibold text-xs tabular-nums">
                       + Saldo finale in contanti: {formatEuro(maxirataNoBtp.maxirataAmount)}
                     </span>
                   </div>
@@ -564,7 +603,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                     <span className="font-medium text-slate-500 uppercase tracking-wider">
                       Rate 1° Periodo (1°-35°)
                     </span>
-                    <span className="font-bold text-purple-700 tabular-nums text-sm">
+                    <span className="font-bold text-slate-900 tabular-nums text-sm">
                       {formatEuro(maxirataNoBtp.monthlyFinancingPaymentWithFees, 2)}/m
                     </span>
                   </div>
@@ -586,19 +625,19 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
             {/* Valore Residuo & Proprietà Veicolo */}
             <div className="py-3.5 border-b border-slate-100 space-y-1.5">
               <div className="flex items-center gap-1 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
-                <ShieldCheck className="w-3.5 h-3.5 text-purple-600" />
+                <ShieldCheck className="w-3.5 h-3.5 text-slate-600" />
                 <span>Stato Proprietà &amp; Valore Veicolo</span>
               </div>
-              <div className="p-2.5 rounded-xl bg-purple-50/70 border border-purple-200 text-xs text-purple-950 space-y-1">
+              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-900 space-y-1">
                 {inputs.maxirataNoBtpMode === 'pay_cash' ? (
                   <>
                     <div className="flex justify-between">
                       <span>Proprietà a fine periodo:</span>
-                      <span className="font-bold text-purple-800">100% Tua (dopo saldo)</span>
+                      <span className="font-bold text-slate-900">100% Tua (dopo saldo)</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Debito residuo dopo il saldo:</span>
-                      <span className="font-bold text-purple-800">0 €</span>
+                      <span className="font-bold text-slate-900">0 €</span>
                     </div>
                   </>
                 ) : (
@@ -626,7 +665,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
             {!isSimpleMode && (
               <>
                 {/* CONTROLLO VALORE MAXIRATA FINALE / VFG */}
-                <div className="py-2.5 px-3 bg-purple-50/40 rounded-xl border border-purple-200/60 my-2 space-y-1.5">
+                <div className="py-2.5 px-3 bg-slate-50 rounded-lg border border-slate-200 my-2 space-y-1.5">
                   <div className="flex items-center justify-between text-xs gap-2">
                     <span className="font-semibold text-slate-700">Maxirata Finale (VFG):</span>
                     <NumericInput
@@ -649,7 +688,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                         });
                       }}
                       className="w-28"
-                      inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-white text-right"
+                      inputClassName="text-xs text-slate-900 border-slate-300 font-bold bg-white text-right"
                     />
                   </div>
 
@@ -669,10 +708,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                                 maxirataCustomMonthlyInstallment: undefined,
                               });
                             }}
-                            className={`px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer min-h-[30px] ${
+                            className={`px-2 py-1 rounded-md text-xs font-semibold transition-colors cursor-pointer min-h-[30px] ${
                               Math.abs(maxirataNoBtp.maxirataPercent - p) < 0.6
-                                ? 'bg-purple-700 text-white shadow-xs'
-                                : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-100'
+                                ? 'bg-slate-900 text-white'
+                                : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
                             }`}
                           >
                             {p}%
@@ -698,7 +737,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                             maxirataCustomMonthlyInstallment: undefined,
                           });
                         }}
-                        inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-white text-right"
+                        inputClassName="text-xs text-slate-900 border-slate-300 font-bold bg-white text-right"
                       />
                     </div>
                   </div>
@@ -718,16 +757,16 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                         maxirataCustomMonthlyInstallment: undefined,
                       });
                     }}
-                    className="w-full fintech-slider slider-purple"
+                    className="w-full fintech-slider"
                     aria-label="Slider Percentuale Maxirata"
                   />
                 </div>
 
                 {/* CONTROLLO DURATA 1° PERIODO MAXIRATA & SELETTORE 35/36 RATE */}
-                <div className="py-2.5 px-3 bg-purple-50/40 rounded-xl border border-purple-200/60 my-2 space-y-1.5">
+                <div className="py-2.5 px-3 bg-slate-50 rounded-lg border border-slate-200 my-2 space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-semibold text-slate-700">Durata 1° Periodo:</span>
-                    <span className="font-bold text-purple-900 tabular-nums">
+                    <span className="font-bold text-slate-900 tabular-nums">
                       {inputs.maxirataMonths} mesi ({inputs.maxirataInterimCount || inputs.maxirataMonths} rate)
                     </span>
                   </div>
@@ -743,10 +782,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                             maxirataCustomMonthlyInstallment: undefined,
                           })
                         }
-                        className={`py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer min-h-[34px] ${
+                        className={`py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer min-h-[34px] ${
                           inputs.maxirataMonths === m
-                            ? 'bg-purple-700 text-white shadow-xs'
-                            : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-100'
+                            ? 'bg-slate-900 text-white'
+                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
                         }`}
                       >
                         {m}m
@@ -754,7 +793,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                     ))}
                   </div>
                   {inputs.maxirataMonths === 36 && (
-                    <div className="pt-1.5 flex items-center justify-between text-[11px] border-t border-purple-200/50">
+                    <div className="pt-1.5 flex items-center justify-between text-[11px] border-t border-slate-200">
                       <span className="text-slate-600 font-medium">Numero rate interim:</span>
                       <div className="flex gap-1">
                         <button
@@ -762,8 +801,8 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                           onClick={() => onUpdateInputs({ maxirataInterimCount: 35 })}
                           className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
                             inputs.maxirataInterimCount === 35
-                              ? 'bg-purple-700 text-white'
-                              : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-50'
+                              ? 'bg-slate-900 text-white'
+                              : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                           }`}
                         >
                           35 rate (es. Škoda/VAG)
@@ -773,8 +812,8 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                           onClick={() => onUpdateInputs({ maxirataInterimCount: 36 })}
                           className={`px-2 py-0.5 rounded text-[11px] font-bold cursor-pointer ${
                             inputs.maxirataInterimCount === 36
-                              ? 'bg-purple-700 text-white'
-                              : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-50'
+                              ? 'bg-slate-900 text-white'
+                              : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                           }`}
                         >
                           36 rate standard
@@ -785,7 +824,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 </div>
 
                 {/* CONTROLLO TAN 1° PERIODO (Tasso Ammortamento Rata) */}
-                <div className="py-2.5 px-3 bg-purple-50/40 rounded-xl border border-purple-200/60 my-2 space-y-1.5">
+                <div className="py-2.5 px-3 bg-slate-50 rounded-lg border border-slate-200 my-2 space-y-1.5">
                   <div className="flex items-center justify-between text-xs gap-2">
                     <span className="font-semibold text-slate-700">TAN Maxirata (Tasso Nominale):</span>
                     <NumericInput
@@ -798,7 +837,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       suffix="%"
                       onChange={(val) => onUpdateInputs({ maxirataTan: val })}
                       className="w-24"
-                      inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-white text-right"
+                      inputClassName="text-xs text-slate-900 border-slate-300 font-bold bg-white text-right"
                     />
                   </div>
                   <div className="flex flex-wrap items-center justify-between gap-1">
@@ -811,8 +850,8 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                           onClick={() => onUpdateInputs({ maxirataTan: t })}
                           className={`px-1.5 py-0.5 rounded text-[10px] font-bold cursor-pointer ${
                             Math.abs((inputs.maxirataTan ?? 0) - t) < 0.05
-                              ? 'bg-purple-700 text-white'
-                              : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-50'
+                              ? 'bg-slate-900 text-white'
+                              : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                           }`}
                         >
                           {t.toFixed(t === 0 ? 0 : 2)}%
@@ -827,13 +866,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                     step={0.1}
                     value={inputs.maxirataTan ?? 0}
                     onChange={(e) => onUpdateInputs({ maxirataTan: parseFloat(e.target.value) })}
-                    className="w-full fintech-slider slider-purple"
+                    className="w-full fintech-slider"
                     aria-label="Slider TAN Finanziamento con Maxirata"
                   />
                 </div>
 
                 {/* CONTROLLO TAEG 1° PERIODO MAXIRATA */}
-                <div className="py-2.5 px-3 bg-purple-50/40 rounded-xl border border-purple-200/60 my-2 space-y-1">
+                <div className="py-2.5 px-3 bg-slate-50 rounded-lg border border-slate-200 my-2 space-y-1">
                   <div className="flex items-center justify-between text-xs gap-2">
                     <span className="font-semibold text-slate-700">TAEG Maxirata (1° Periodo):</span>
                     <NumericInput
@@ -846,7 +885,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       suffix="%"
                       onChange={(val) => onUpdateInputs({ maxirataTaeg: val })}
                       className="w-24"
-                      inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-white text-right"
+                      inputClassName="text-xs text-slate-900 border-slate-300 font-bold bg-white text-right"
                     />
                   </div>
                   <input
@@ -856,13 +895,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                     step={0.05}
                     value={inputs.maxirataTaeg}
                     onChange={(e) => onUpdateInputs({ maxirataTaeg: parseFloat(e.target.value) })}
-                    className="w-full fintech-slider slider-purple"
+                    className="w-full fintech-slider"
                     aria-label="TAEG Finanziamento con Maxirata"
                   />
                 </div>
 
                 {/* CONTROLLO DIRETTO RATA MENSILE PREVENTIVO */}
-                <div className="py-2 px-3 bg-white rounded-xl border border-purple-200 my-2 flex items-center justify-between gap-2">
+                <div className="py-2 px-3 bg-white rounded-lg border border-slate-200 my-2 flex items-center justify-between gap-2">
                   <div className="flex flex-col">
                     <span className="text-xs font-semibold text-slate-700">Rata Mensile dal Preventivo:</span>
                     <span className="text-[10px] text-slate-400">
@@ -887,13 +926,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                         })
                       }
                       className="w-24"
-                      inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-purple-50/50 text-right"
+                      inputClassName="text-xs text-slate-900 border-slate-300 font-bold bg-white text-right"
                     />
                     {inputs.maxirataCustomMonthlyInstallment && (
                       <button
                         type="button"
                         onClick={() => onUpdateInputs({ maxirataCustomMonthlyInstallment: undefined })}
-                        className="text-[10px] text-purple-700 underline font-semibold hover:text-purple-900 cursor-pointer"
+                        className="text-[10px] text-blue-700 underline font-semibold hover:text-blue-900 cursor-pointer"
                         title="Ripristina calcolo automatico della rata"
                       >
                         Reset
@@ -906,10 +945,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
 
             {/* CONTROLLI EDITABILI PER IL RIFINANZIAMENTO (quando refinance è attivo) */}
             {inputs.maxirataNoBtpMode !== 'pay_cash' && (
-              <div className="py-3.5 space-y-3 bg-purple-50/50 p-3 rounded-xl border border-purple-200/80 my-2">
-                <div className="flex items-center justify-between text-xs font-bold text-purple-950">
+              <div className="py-3.5 space-y-3 bg-rose-50/60 p-3 rounded-lg border border-rose-200 my-2">
+                <div className="flex items-center justify-between text-xs font-bold text-rose-950">
                   <span className="flex items-center gap-1">
-                    <SlidersHorizontal className="w-3.5 h-3.5 text-purple-700" />
+                    <SlidersHorizontal className="w-3.5 h-3.5 text-rose-700" />
                     <span>Rifinanziamento 2° Periodo:</span>
                   </span>
                 </div>
@@ -918,7 +957,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 <div className="space-y-1">
                   <div className="flex justify-between text-xs">
                     <span className="text-slate-600">Durata rateizzazione:</span>
-                    <span className="font-bold text-purple-900">{inputs.refinanceMonths} mesi</span>
+                    <span className="font-bold text-rose-900">{inputs.refinanceMonths} mesi</span>
                   </div>
                   <div className="grid grid-cols-4 gap-1">
                     {REFINANCE_MONTH_PRESETS.map((m) => (
@@ -926,10 +965,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                         key={m}
                         type="button"
                         onClick={() => onUpdateInputs({ refinanceMonths: m })}
-                        className={`py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
+                        className={`py-1 rounded-md text-[11px] font-bold transition-colors cursor-pointer ${
                           inputs.refinanceMonths === m
-                            ? 'bg-purple-700 text-white shadow-xs'
-                            : 'bg-white text-slate-700 border border-purple-200 hover:bg-purple-100'
+                            ? 'bg-rose-800 text-white'
+                            : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-100'
                         }`}
                       >
                         {m}m
@@ -953,7 +992,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                         suffix="%"
                         onChange={(val) => onUpdateInputs({ refinanceTaeg: val })}
                         className="w-24"
-                        inputClassName="text-xs text-purple-900 border-purple-300 font-bold bg-white"
+                        inputClassName="text-xs text-rose-900 border-rose-300 font-bold bg-white"
                       />
                     </div>
                     <input
@@ -963,7 +1002,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       step={0.1}
                       value={inputs.refinanceTaeg}
                       onChange={(e) => onUpdateInputs({ refinanceTaeg: parseFloat(e.target.value) })}
-                      className="w-full fintech-slider slider-purple"
+                      className="w-full fintech-slider"
                       aria-label="TAEG del rifinanziamento maxirata"
                     />
                   </div>
@@ -990,7 +1029,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   {inputs.maxirataNoBtpMode === 'pay_cash' ? 'Saldo unico' : 'Rifinanziamento incluso'}
                 </div>
               </div>
-              <div className="text-lg font-extrabold tabular-nums text-purple-400">
+              <div className="text-lg font-extrabold tabular-nums text-white">
                 {formatEuro(
                   inputs.includeOpportunityCost
                     ? maxirataNoBtp.realNetCost
@@ -1042,48 +1081,52 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
         {/* CARD 4: MAXIRATA + SALVADANAIO BTP (CON CONTROLLO INVESTIMENTO MESE)*/}
         {/* ================================================================= */}
         <article className={getCardStyle('maxirata')}>
-          {verdict.winner === 'maxirata' && (
-            <div className="-top-3.5 left-5 absolute inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-600 text-white shadow-sm">
-              <Award className="w-3.5 h-3.5" />
-              Scelta Più Conveniente
-            </div>
-          )}
-
           <div>
             {/* Card Header */}
             <div className="flex items-start justify-between gap-3 pb-4 border-b border-slate-100">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-amber-600">
-                  Opzione 4 • VFG + Salvadanaio
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-amber-800">
+                    Opzione 4 • VFG + Salvadanaio
+                  </span>
+                  {verdict.winner === 'maxirata' && (
+                    <span className="px-2 py-0.5 rounded bg-emerald-700 text-white font-bold text-[10px] tracking-wide uppercase inline-flex items-center gap-1">
+                      <Award className="w-3 h-3" />
+                      Vincente
+                    </span>
+                  )}
+                </div>
                 <h3 className="text-lg font-bold text-slate-900 mt-0.5">
                   Maxirata + {instrumentName}
                 </h3>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
-                <PiggyBank className="w-5 h-5" />
-              </div>
+              <PiggyBank className="w-5 h-5 text-amber-700 shrink-0 mt-1" />
             </div>
 
-            {/* Hero Number: Real Monthly Commitment */}
-            <div className="py-4 border-b border-slate-100 space-y-2">
-              <div className="text-xs font-medium text-slate-500 uppercase tracking-wider">
-                Impegno Mensile Reale (Rata + {instrumentName})
+            {/* Hero Number: Rata Auto vs Accantonamento Personale */}
+            <div className="py-4 border-b border-slate-100 space-y-2.5">
+              <div>
+                <div className="text-xs font-medium text-slate-500 uppercase tracking-wider">
+                  Rata Auto al Concessionario
+                </div>
+                <div className="flex items-baseline gap-1.5 mt-0.5">
+                  <span className="text-3xl font-extrabold text-slate-900 tabular-nums tracking-tight">
+                    {formatEuro(maxirata.monthlyFinancingPaymentWithFees, 2)}
+                  </span>
+                  <span className="text-xs font-semibold text-slate-500">/mese</span>
+                </div>
               </div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-3xl font-extrabold text-amber-600 tabular-nums tracking-tight">
-                  {formatEuro(maxirata.realMonthlyCommitmentWithBtp, 2)}
-                </span>
-                <span className="text-xs font-semibold text-slate-500">/mese</span>
-              </div>
-              <div className="text-[11px] text-slate-600">
-                <span className="font-semibold text-amber-800">
-                  {formatEuro(maxirata.monthlyFinancingPaymentWithFees, 2)} rata auto
-                </span>{' '}
-                +{' '}
-                <span className="font-semibold text-emerald-700">
-                  {formatEuro(maxirata.effectiveMonthlyBtpSavings, 2)} {instrumentName}
-                </span>
+
+              <div className="p-2.5 rounded-lg bg-amber-50/80 border border-amber-200/80 text-xs space-y-1">
+                <div className="flex items-center justify-between text-amber-950 font-semibold">
+                  <span>+ Salvadanaio {instrumentName}:</span>
+                  <span className="tabular-nums font-bold text-amber-800">
+                    +{formatEuro(maxirata.effectiveMonthlyBtpSavings, 2)}/m
+                  </span>
+                </div>
+                <div className="text-[11px] text-amber-900/80 leading-tight">
+                  Tuo capitale patrimoniale a scadenza (+ rendimenti netti maturati a tuo favore).
+                </div>
               </div>
             </div>
 

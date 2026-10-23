@@ -51,7 +51,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] py-6 sm:py-10 px-4 sm:px-6 lg:px-8 print:p-0 print:m-0 print:bg-white">
+    <div className="min-h-[100dvh] bg-[#F8FAFC] text-[#0F172A] py-6 sm:py-10 px-4 sm:px-6 lg:px-8 print:p-0 print:m-0 print:bg-white">
       <div className="max-w-7xl mx-auto space-y-6 print:m-0 print:p-0 print:max-w-none">
         <div className="print:hidden space-y-6">
           <Header
@@ -164,8 +164,12 @@ export default function App() {
         />
       </div>
 
-      {/* Vercel Web Analytics (Cookieless, GDPR-compliant traffic insights) */}
-      <Analytics />
+      {/* Vercel Web Analytics (Cookieless, GDPR-compliant traffic insights - disattivato se DNT/GPC attivo) */}
+      {typeof navigator !== 'undefined' &&
+      navigator.doNotTrack !== '1' &&
+      !(navigator as { globalPrivacyControl?: boolean }).globalPrivacyControl ? (
+        <Analytics />
+      ) : null}
     </div>
   );
 }

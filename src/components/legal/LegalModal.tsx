@@ -132,7 +132,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                   Questo sito <strong>non fa uso di cookie di profilazione o tracciamento pubblicitario</strong> (nessun pixel di tracciamento commerciale o profilazione comportamentale).
                 </p>
                 <p>
-                  Per monitorare in forma strettamente aggregata il volume di traffico e le prestazioni del software viene utilizzato <strong>Vercel Web Analytics</strong> in modalit&agrave; <em>cookieless</em> (senza memorizzazione di cookie sul dispositivo): nessun dato personale identificativo, nessun indirizzo IP e nessun dato di navigazione sensibile viene profilato o ceduto a terzi. Non &egrave; pertanto richiesto alcun banner di consenso preventivo (CMP), in piena conformit&agrave; con le <em>Linee Guida del Garante Privacy del 10 giugno 2021</em>.
+                  Per monitorare in forma strettamente aggregata il volume di traffico e le prestazioni del software viene utilizzato <strong>Vercel Web Analytics</strong> in modalit&agrave; <em>cookieless</em> (senza cookie o local storage sul dispositivo). Il servizio rispetta rigorosamente le intestazioni di privacy del browser: se hai attivo il segnale <code>Do Not Track (DNT)</code> o <code>Global Privacy Control (GPC)</code>, la telemetria &egrave; completamente inibita.
                 </p>
               </div>
 
@@ -218,6 +218,13 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                     </li>
                   </ul>
                 </div>
+              </div>
+
+              <div className="p-3 bg-slate-100 rounded-lg border border-slate-200 text-xs text-slate-700 space-y-1">
+                <span className="font-semibold block text-slate-800">Contatto e Comunicazioni (Art. 7 D.Lgs. 70/2003):</span>
+                <p>
+                  Per segnalazioni tecniche, miglioramenti agli algoritmi di calcolo o richieste di chiarimento sul software open-source, &egrave; possibile contattare lo sviluppatore tramite la repository GitHub del progetto: <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-blue-700 underline font-medium">AutoFin BTP su GitHub</a>.
+                </p>
               </div>
 
               <p className="text-[11px] text-slate-500">

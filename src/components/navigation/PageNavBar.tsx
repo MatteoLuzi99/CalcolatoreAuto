@@ -5,8 +5,6 @@ import {
   TrendingUp,
   BarChart3,
   BookOpen,
-  Sparkles,
-  ChevronRight,
 } from 'lucide-react';
 import { formatEuro } from '../../lib/storage';
 import { FullCalculationOutput } from '../../types/calculator';
@@ -29,37 +27,37 @@ const ALL_PAGES: {
 }[] = [
   {
     id: 'comparison',
-    title: '1. Calcolatore & Confronto Preventivo',
-    shortTitle: '1. Calcolatore',
-    subtitle: 'Contanti vs Finanziamento vs Maxirata',
+    title: 'Confronto 4 Opzioni',
+    shortTitle: 'Confronto',
+    subtitle: 'Contanti, Standard, Maxirata, BTP',
     icon: Car,
   },
   {
+    id: 'amortization',
+    title: 'Ammortamento & Grafici',
+    shortTitle: 'Grafici',
+    subtitle: 'Timeline mensile e CSV',
+    icon: BarChart3,
+  },
+  {
     id: 'simulator',
-    title: '2. Simulatore Budget & Gap Maxirata',
-    shortTitle: '2. Simulatore Gap',
-    subtitle: 'Scegli quanto investire al mese',
+    title: 'Simulatore Gap Maxirata',
+    shortTitle: 'Simulatore',
+    subtitle: 'Budget mensile personalizzato',
     icon: Calculator,
   },
   {
     id: 'instruments',
-    title: '3. Strumenti Finanziari & Rendimenti',
-    shortTitle: '3. Titoli & Rendimenti',
-    subtitle: 'BTP, ETF Monetari, Azioni 3Y',
+    title: 'Titoli di Stato & Rendimenti',
+    shortTitle: 'Rendimenti',
+    subtitle: 'BTP, Depositi, ETF Monetari',
     icon: TrendingUp,
   },
   {
-    id: 'amortization',
-    title: '2. Tabella Mese per Mese & Grafici',
-    shortTitle: '2. Ammortamento & Grafici',
-    subtitle: 'Evoluzione nel tempo e CSV',
-    icon: BarChart3,
-  },
-  {
     id: 'tutorial',
-    title: '3. Guida & Trucchi',
-    shortTitle: '3. Guida',
-    subtitle: 'Come evitare le trappole dei concessionari',
+    title: 'Guida Negoziazione SECCI',
+    shortTitle: 'Guida',
+    subtitle: 'Clausole e trucchi concessionaria',
     icon: BookOpen,
   },
 ];
@@ -72,17 +70,16 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
 }) => {
   const { inputs, maxirata } = calc;
 
-  // In modalità semplice mostriamo solo le 3 sezioni chiave senza dispersioni
   const visiblePages = isSimpleMode
     ? ALL_PAGES.filter((p) => p.id === 'comparison' || p.id === 'amortization' || p.id === 'tutorial')
     : ALL_PAGES;
 
   return (
     <div className="space-y-3">
-      {/* Tab Navigation Pill Bar */}
+      {/* Tab Navigation */}
       <nav
-        aria-label="Navigazione Pagine dell'Applicazione"
-        className="bg-white rounded-2xl border border-slate-200/90 p-1.5 shadow-xs flex overflow-x-auto sm:flex-wrap no-scrollbar gap-1.5"
+        aria-label="Sezioni di Analisi"
+        className="bg-white rounded-xl border border-slate-200/90 p-1 flex overflow-x-auto sm:flex-wrap no-scrollbar gap-1"
       >
         {visiblePages.map((page) => {
           const Icon = page.icon;
@@ -93,29 +90,21 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
               key={page.id}
               type="button"
               onClick={() => onChangePage(page.id)}
-              className={`min-w-[135px] sm:min-w-[170px] shrink-0 sm:shrink sm:flex-1 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl text-left transition-all cursor-pointer flex items-center gap-2.5 sm:gap-3 ${
+              className={`min-w-[130px] sm:min-w-[160px] shrink-0 sm:shrink sm:flex-1 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-lg text-left transition-colors cursor-pointer flex items-center gap-2.5 ${
                 isActive
-                  ? 'bg-slate-900 text-white shadow-sm ring-1 ring-slate-900'
+                  ? 'bg-slate-900 text-white'
                   : 'bg-transparent hover:bg-slate-50 text-slate-600 hover:text-slate-900'
               }`}
             >
-              <div
-                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
-                  isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-              </div>
+              <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-blue-400' : 'text-slate-500'}`} />
               <div className="overflow-hidden">
-                <div className="text-xs sm:text-sm font-bold truncate">
+                <div className="text-xs sm:text-sm font-semibold truncate leading-tight">
                   <span className="hidden md:inline">{page.title}</span>
                   <span className="md:hidden">{page.shortTitle}</span>
                 </div>
                 <div
-                  className={`text-[10px] sm:text-[11px] truncate ${
-                    isActive ? 'text-slate-300' : 'text-slate-400'
+                  className={`text-[11px] truncate leading-tight mt-0.5 ${
+                    isActive ? 'text-slate-300' : 'text-slate-500'
                   }`}
                 >
                   {page.subtitle}
@@ -126,55 +115,43 @@ export const PageNavBar: React.FC<PageNavBarProps> = ({
         })}
       </nav>
 
-      {/* Persistent Mini Vehicle Badge Bar (visible on all pages so user keeps context) */}
-      <div className="bg-slate-100/90 border border-slate-200/70 rounded-xl px-3 sm:px-4 py-2 flex flex-wrap items-center justify-between gap-2 sm:gap-3 text-xs text-slate-600">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-medium">
-          <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[11px]">
-            AUTO
+      {/* Persistent Vehicle Context Bar */}
+      <div className="bg-slate-100 rounded-lg px-3.5 py-2 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 font-medium">
+          <span className="px-2 py-0.5 rounded bg-slate-900 text-white font-bold text-[10px] tracking-wide uppercase">
+            Veicolo
           </span>
-          <span className="font-bold text-slate-800">
+          <span className="font-semibold text-slate-900">
             {inputs.scenarioName || 'Preventivo Auto'}
           </span>
-          <span className="text-slate-400">•</span>
+          <span className="text-slate-300">•</span>
           <span>
             Listino:{' '}
-            <strong className="text-slate-800 tabular-nums">
+            <strong className="text-slate-900 tabular-nums">
               {formatEuro(inputs.carPriceCash)}
             </strong>
           </span>
           {inputs.financingDiscount > 0 && (
             <>
-              <span className="text-slate-400">•</span>
-              <span>
-                Promo:{' '}
-                <strong className="text-blue-700 tabular-nums">
-                  {formatEuro(inputs.carPriceCash - inputs.financingDiscount)}
-                </strong>
+              <span className="text-slate-300">•</span>
+              <span className="text-emerald-700 font-semibold">
+                Sconto Finanziamento: -{formatEuro(inputs.financingDiscount)}
               </span>
             </>
           )}
-          <span className="text-slate-400">•</span>
+          <span className="text-slate-300">•</span>
           <span>
-            Maxirata:{' '}
-            <strong className="text-amber-700 tabular-nums">
+            Maxirata (VFG):{' '}
+            <strong className="text-slate-900 tabular-nums">
               {formatEuro(maxirata.maxirataAmount)}
-            </strong>{' '}
-            a {inputs.maxirataMonths} mesi
+            </strong>
           </span>
         </div>
 
-        {activePage !== 'comparison' && (
-          <button
-            type="button"
-            onClick={() => onChangePage('comparison')}
-            className="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center gap-1 cursor-pointer transition-colors"
-          >
-            <span>Modifica parametri preventivo</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </button>
-        )}
+        <div className="text-slate-500 text-[11px] font-medium shrink-0">
+          Orizzonte: <strong className="text-slate-800">{inputs.maxirataMonths} Mesi</strong>
+        </div>
       </div>
     </div>
   );
 };
-

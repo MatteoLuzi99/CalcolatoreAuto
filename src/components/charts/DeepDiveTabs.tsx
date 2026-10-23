@@ -45,7 +45,7 @@ function TimelineCustomTooltip({
   const isMaxirataTarget = monthNum === maxirataMonth;
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white/95 p-3.5 shadow-lg backdrop-blur-sm">
+    <div className="rounded-lg border border-slate-300 bg-white p-3 shadow-md">
       <div className="mb-2 flex items-center justify-between gap-4 border-b border-slate-100 pb-1.5">
         <span className="text-xs font-semibold tracking-wide text-slate-700 uppercase">
           Mese {label}
@@ -87,7 +87,7 @@ function BreakdownCustomTooltip({ active, payload, label }: CustomTooltipProps) 
   if (!active || !payload || payload.length === 0) return null;
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white/95 p-3.5 shadow-lg backdrop-blur-sm">
+    <div className="rounded-lg border border-slate-300 bg-white p-3 shadow-md">
       <p className="mb-2 border-b border-slate-100 pb-1.5 text-xs font-semibold text-slate-800">
         {label}
       </p>

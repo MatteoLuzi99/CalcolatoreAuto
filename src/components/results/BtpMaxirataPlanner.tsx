@@ -65,25 +65,22 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
   return (
     <section
       aria-label={`Pianificatore Salvadanaio ${instrumentName} per la Maxirata`}
-      className="rounded-2xl border border-slate-200/80 bg-white shadow-sm p-4 sm:p-6 space-y-6"
+      className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 space-y-6"
     >
       {/* Top Header & Tax Regime Selector */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-100">
-        <div className="flex items-start gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-600 shrink-0 mt-0.5">
-            <PiggyBank className="w-6 h-6" />
-          </div>
+        <div className="flex items-start gap-3">
+          <PiggyBank className="w-6 h-6 text-emerald-700 shrink-0 mt-1" />
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">
-                Strategia Anti-Stangata VFG
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                Strategia Salvadanaio VFG
               </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800">
-                <ShieldCheck className="w-3 h-3" />
-                Obiettivo: {formatEuro(maxirata.maxirataAmount)} al mese {maxirata.months}
+              <span className="text-xs text-slate-500">
+                • Target: <strong>{formatEuro(maxirata.maxirataAmount)}</strong> al mese {maxirata.months}
               </span>
             </div>
-            <h2 className="text-xl font-bold text-slate-900 mt-0.5">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">
               Pianificatore Salvadanaio {instrumentName} per la Maxirata
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
@@ -92,7 +89,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
               <strong className="text-slate-900 tabular-nums">
                 {formatEuro(maxirata.maxirataAmount)}
               </strong>{' '}
-              pronti sul conto e farti pagare parte del riscatto dagli interessi.
+              pronti per estinguere la maxirata in contanti e far pagare parte della vettura dagli interessi attivi.
             </p>
           </div>
         </div>
@@ -103,7 +100,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
             htmlFor="btp-tax-regime-select"
             className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1"
           >
-            Strumento &amp; Tassazione Rendimento
+            Strumento &amp; Tassazione
           </label>
           <select
             id="btp-tax-regime-select"
@@ -111,7 +108,7 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
             onChange={(e) =>
               onUpdateInputs({ taxRegime: e.target.value as TaxRegime })
             }
-            className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+            className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-600 cursor-pointer"
           >
             {TAX_REGIME_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -122,16 +119,11 @@ export const BtpMaxirataPlanner: React.FC<BtpMaxirataPlannerProps> = ({
         </div>
       </div>
 
-      {/* EDUCATIONAL CALLOUT: Rata Concessionaria vs Quota BTP A Parte */}
-      <div className="rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-blue-500/10 border border-emerald-300/80 p-5 space-y-3">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
-            💡
-          </div>
-          <h3 className="text-sm font-extrabold text-slate-900 uppercase tracking-wide">
-            Spiegazione Chiara: Quanti soldi paghi al concessionario vs Quanti ne investi A PARTE?
-          </h3>
-        </div>
+      {/* Rata Concessionaria vs Quota BTP Personale */}
+      <div className="rounded-lg bg-slate-50 border border-slate-200 p-4 sm:p-5 space-y-3">
+        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+          Scomposizione Flussi: Rata Versata alla Concessionaria vs Quota Risparmiata per Te
+        </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
           <div className="bg-white/90 rounded-xl p-3.5 border border-amber-200 shadow-xs flex flex-col justify-between">

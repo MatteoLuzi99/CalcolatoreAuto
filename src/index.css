@@ -1,15 +1,44 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 700 800;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-700.woff2') format('woff2');
+}
+
 @layer base {
   :root {
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    --ground: #F8FAFC;
+    --ink: #0F172A;
+    --ink-muted: #475569;
+    --accent: #1D4ED8;
+    --accent-copper: #B45309;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #F8FAFC;
-    color: #0F172A;
+    background-color: var(--ground);
+    color: var(--ink);
+    letter-spacing: -0.011em;
   }
 }
 
@@ -17,13 +46,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Custom Clean Fintech Range Sliders */
+/* Editorial Fintech Range Sliders - Anti-slop: No diffuse blur, clean tactile feedback */
 input[type="range"].fintech-slider {
   -webkit-appearance: none;
   appearance: none;
   height: 6px;
   background: #E2E8F0;
-  border-radius: 9999px;
+  border-radius: 3px;
   outline: none;
   transition: background 0.15s ease;
 }
@@ -35,44 +64,43 @@ input[type="range"].fintech-slider:hover {
 input[type="range"].fintech-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  background: #2563EB;
+  background: #1D4ED8;
   cursor: pointer;
-  border: 2.5px solid #FFFFFF;
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.28);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2);
+  transition: transform 0.12s ease;
 }
 
 input[type="range"].fintech-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+  transform: scale(1.15);
 }
 
 input[type="range"].fintech-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  background: #2563EB;
+  background: #1D4ED8;
   cursor: pointer;
-  border: 2.5px solid #FFFFFF;
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.28);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.2);
   transition: transform 0.12s ease;
 }
 
 input[type="range"].fintech-slider.slider-emerald::-webkit-slider-thumb {
-  background: #059669;
+  background: #047857;
 }
 input[type="range"].fintech-slider.slider-emerald::-moz-range-thumb {
-  background: #059669;
+  background: #047857;
 }
 
 input[type="range"].fintech-slider.slider-amber::-webkit-slider-thumb {
-  background: #D97706;
+  background: #B45309;
 }
 input[type="range"].fintech-slider.slider-amber::-moz-range-thumb {
-  background: #D97706;
+  background: #B45309;
 }
 
 /* Print Styles for Multi-Page PDF Generation */
@@ -99,4 +127,3 @@ input[type="range"].fintech-slider.slider-amber::-moz-range-thumb {
     page-break-inside: avoid !important;
   }
 }
-

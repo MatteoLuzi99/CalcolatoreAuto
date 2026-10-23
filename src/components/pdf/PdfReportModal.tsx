@@ -146,7 +146,7 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
               </div>
               <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
                 <span className="text-[10px] uppercase font-bold text-slate-500 block">Maxirata Finale VFG</span>
-                <span className="text-sm font-extrabold text-purple-800 tabular-nums">
+                <span className="text-sm font-extrabold text-slate-900 tabular-nums">
                   {formatEuro(maxirata.maxirataAmount)} ({maxirata.maxirataPercent}%)
                 </span>
               </div>
@@ -231,7 +231,7 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
                       <td className="p-2 text-right font-semibold text-blue-700">
                         {formatEuro(standard.monthlyInstallmentTotal, 2)}/m ({inputs.standardMonths}m)
                       </td>
-                      <td className="p-2 text-right font-semibold text-purple-700">
+                      <td className="p-2 text-right font-semibold text-slate-800">
                         {formatEuro(maxirataNoBtp.monthlyFinancingPaymentWithFees, 2)}/m ({maxirataNoBtp.interimInstallmentsCount}m)
                       </td>
                       <td className="p-2 text-right bg-emerald-50/40 font-semibold text-amber-800">
@@ -251,7 +251,7 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
                       <td className="p-2 font-medium">Gestione Maxirata a Scadenza (M{inputs.maxirataMonths})</td>
                       <td className="p-2 text-right text-slate-400">Nessuna</td>
                       <td className="p-2 text-right text-slate-400">Nessuna</td>
-                      <td className="p-2 text-right text-purple-900 font-semibold">
+                      <td className="p-2 text-right text-slate-800 font-semibold">
                         {inputs.maxirataNoBtpMode === 'pay_cash'
                           ? `Saldo cash ${formatEuro(maxirataNoBtp.maxirataAmount)}`
                           : `Rifinanz. ${formatEuro(maxirataNoBtp.monthlyInstallment2ndPeriod, 2)}/m (${inputs.refinanceMonths}m)`}
@@ -293,7 +293,7 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
                       <td className="p-2">Costo Reale Netto (con rendimenti {instrumentName})</td>
                       <td className="p-2 text-right text-emerald-400">{formatEuro(cash.realNetCost)}</td>
                       <td className="p-2 text-right text-blue-300">{formatEuro(standard.realNetCost)}</td>
-                      <td className="p-2 text-right text-purple-300">{formatEuro(maxirataNoBtp.realNetCost)}</td>
+                      <td className="p-2 text-right text-slate-300">{formatEuro(maxirataNoBtp.realNetCost)}</td>
                       <td className="p-2 text-right text-amber-300 font-black">
                         {formatEuro(maxirata.realNetCost)}
                       </td>
@@ -393,7 +393,7 @@ export function PdfReportModal({ isOpen, onClose, calc }: PdfReportModalProps) {
                 <div className="space-y-1">
                   <div className="flex justify-between font-semibold">
                     <span>3. Maxirata Senza {instrumentName} ({inputs.maxirataNoBtpMode === 'pay_cash' ? 'Saldo Cash' : 'Rifinanziata'})</span>
-                    <span className="font-extrabold tabular-nums text-purple-800">{formatEuro(maxirataNoBtp.totalOutOfPocket)}</span>
+                    <span className="font-extrabold tabular-nums text-slate-800">{formatEuro(maxirataNoBtp.totalOutOfPocket)}</span>
                   </div>
                   <div className="h-5 w-full bg-slate-100 rounded-md overflow-hidden flex">
                     <div

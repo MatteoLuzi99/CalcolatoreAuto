@@ -120,11 +120,13 @@ describe('Financial Engine — Calcolatore Auto & BTP', () => {
     // Testi normali
     expect(sanitizeCsvCell('Piano Ammortamento')).toBe('Piano Ammortamento');
 
-    // Payload malevoli con trigger formula (=, +, -, @, \t, \r)
+    // Payload malevoli con trigger formula (=, +, -, @, |, %) anche con spazi
     expect(sanitizeCsvCell('=SUM(A1:A10)')).toBe('"\'=SUM(A1:A10)"');
     expect(sanitizeCsvCell('+cmd|/C calc')).toBe('"\'=cmd|/C calc"'.replace('=cmd', '+cmd'));
     expect(sanitizeCsvCell('-2+3+cmd')).toBe('"\'=-2+3+cmd"'.replace('=-2', '-2'));
     expect(sanitizeCsvCell('@SUM(1+1)')).toBe('"\'=@SUM(1+1)"'.replace('=@', '@'));
+    expect(sanitizeCsvCell(' =SUM(1+1)')).toBe('"\' =SUM(1+1)"');
+    expect(sanitizeCsvCell('|cmd')).toBe('"\'|cmd"');
   });
 
   it('correctly calculates Maxirata Semplice in pay_cash vs refinance mode', () => {
