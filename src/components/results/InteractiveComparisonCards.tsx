@@ -2,19 +2,15 @@ import React, { useState } from 'react';
 import {
   ChevronDown,
   ChevronUp,
-  HelpCircle,
-  TrendingUp,
   ShieldCheck,
-  Check,
   SlidersHorizontal,
 } from 'lucide-react';
-import {
+import type {
   CalculatorInputs,
   FullCalculationOutput,
   WinnerOptionId,
 } from '../../types/calculator';
-import { formatEuro, formatPercent } from '../../lib/storage';
-import { NumericInput } from '../common/NumericInput';
+import { formatEuro } from '../../lib/storage';
 
 export interface InteractiveComparisonCardsProps {
   calc: FullCalculationOutput;
@@ -23,12 +19,10 @@ export interface InteractiveComparisonCardsProps {
 }
 
 const STANDARD_MONTH_PRESETS = [36, 48, 60, 72, 84];
-const REFINANCE_MONTH_PRESETS = [24, 36, 48, 60];
 
 export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProps> = ({
   calc,
   onUpdateInputs,
-  isSimpleMode = false,
 }) => {
   const { inputs, cash, standard, maxirataNoBtp, maxirata, verdict } = calc;
   const instrumentName = inputs.selectedInstrumentName || 'BTP';
@@ -37,7 +31,6 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
   const [mobileViewAll, setMobileViewAll] = useState(false);
   const [showSecciDetails, setShowSecciDetails] = useState(false);
 
-  const promoPrice = Math.max(0, inputs.carPriceCash - inputs.financingDiscount);
   const totalUpfront = inputs.downPaymentCash + inputs.tradeInValue;
 
   const strategies: {
@@ -192,19 +185,15 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   <div className="font-medium text-slate-900">Anticipo versato (cash)</div>
                   <div className="text-[11px] text-slate-400">Capitale versato al ritiro</div>
                 </td>
-                {/* Contanti */}
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'cash' ? '' : 'hidden lg:table-cell'}`}>
                   {formatEuro(inputs.downPaymentCash, 2)}
                 </td>
-                {/* Standard */}
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'standard' ? '' : 'hidden lg:table-cell'}`}>
                   {formatEuro(inputs.downPaymentCash, 2)}
                 </td>
-                {/* Maxirata Sola */}
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
                   {formatEuro(inputs.downPaymentCash, 2)}
                 </td>
-                {/* Maxirata + BTP */}
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
                   {formatEuro(inputs.downPaymentCash, 2)}
                 </td>
@@ -294,13 +283,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   0,00 € / mese
                 </td>
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'standard' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(standard.monthlyPayment, 2)} / mese
+                  {formatEuro(standard.monthlyInstallmentTotal, 2)} / mese
                 </td>
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(maxirataNoBtp.monthlyPaymentPeriod1, 2)} / mese
+                  {formatEuro(maxirataNoBtp.monthlyFinancingPaymentWithFees, 2)} / mese
                 </td>
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(maxirata.monthlyPaymentFinancing, 2)} / mese
+                  {formatEuro(maxirata.monthlyFinancingPaymentWithFees, 2)} / mese
                 </td>
               </tr>
 
@@ -322,7 +311,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   0,00 € / mese
                 </td>
                 <td className={`p-4 font-bold text-blue-700 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
-                  +{formatEuro(maxirata.monthlyBtpContribution, 2)} / mese
+                  +{formatEuro(maxirata.effectiveMonthlyBtpSavings, 2)} / mese
                 </td>
               </tr>
 
@@ -341,9 +330,9 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       <button
                         key={m}
                         type="button"
-                        onClick={() => onUpdateInputs({ standardLoanDurationMonths: m })}
+                        onClick={() => onUpdateInputs({ standardMonths: m })}
                         className={`px-1.5 py-0.5 rounded text-[11px] font-medium cursor-pointer transition-colors ${
-                          inputs.standardLoanDurationMonths === m
+                          inputs.standardMonths === m
                             ? 'bg-slate-900 text-white font-bold'
                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                         }`}
@@ -354,10 +343,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   </div>
                 </td>
                 <td className={`p-4 text-slate-800 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
-                  {inputs.loanPeriod1Months} mesi
+                  {inputs.maxirataMonths} mesi
                 </td>
                 <td className={`p-4 text-slate-800 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
-                  {inputs.loanPeriod1Months} mesi
+                  {inputs.maxirataMonths} mesi
                 </td>
               </tr>
 
@@ -371,23 +360,23 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   0,00 €
                 </td>
                 <td className={`p-4 text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'standard' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(standard.monthlyPayment, 2)}
+                  {formatEuro(standard.monthlyInstallmentTotal, 2)}
                 </td>
                 <td className={`p-4 text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(maxirataNoBtp.monthlyPaymentPeriod1, 2)}
+                  {formatEuro(maxirataNoBtp.monthlyFinancingPaymentWithFees, 2)}
                 </td>
                 <td className={`p-4 text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(maxirata.totalMonthlyCommitment, 2)}
+                  {formatEuro(maxirata.realMonthlyCommitmentWithBtp, 2)}
                 </td>
               </tr>
 
-              {/* SECTION: SCADENZA MESE 36 / MAXIRATA VFG */}
+              {/* SECTION: SCADENZA / MAXIRATA VFG */}
               <tr className="bg-slate-50/50">
                 <td
                   colSpan={5}
                   className="px-4 py-2 text-[11px] font-bold text-slate-700 tracking-wide bg-slate-100/50"
                 >
-                  3. Chiusura del Contratto a Scadenza (Mese {inputs.loanPeriod1Months})
+                  3. Chiusura del Contratto a Scadenza (Mese {inputs.maxirataMonths})
                 </td>
               </tr>
 
@@ -404,7 +393,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   0,00 € (ammortizzata)
                 </td>
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(maxirataNoBtp.futureValue, 2)}
+                  {formatEuro(maxirataNoBtp.maxirataAmount, 2)}
                 </td>
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
                   {formatEuro(maxirata.maxirataAmount, 2)}
@@ -428,9 +417,9 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                     <div className="flex gap-1">
                       <button
                         type="button"
-                        onClick={() => onUpdateInputs({ maxirataPaymentMode: 'cash' })}
+                        onClick={() => onUpdateInputs({ maxirataNoBtpMode: 'pay_cash' })}
                         className={`px-2 py-0.5 rounded text-[11px] font-medium cursor-pointer transition-colors ${
-                          inputs.maxirataPaymentMode === 'cash'
+                          inputs.maxirataNoBtpMode === 'pay_cash'
                             ? 'bg-slate-900 text-white font-bold'
                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                         }`}
@@ -439,9 +428,9 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       </button>
                       <button
                         type="button"
-                        onClick={() => onUpdateInputs({ maxirataPaymentMode: 'refinance' })}
+                        onClick={() => onUpdateInputs({ maxirataNoBtpMode: 'refinance' })}
                         className={`px-2 py-0.5 rounded text-[11px] font-medium cursor-pointer transition-colors ${
-                          inputs.maxirataPaymentMode === 'refinance'
+                          inputs.maxirataNoBtpMode === 'refinance'
                             ? 'bg-slate-900 text-white font-bold'
                             : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                         }`}
@@ -449,9 +438,9 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                         Rifinanzio
                       </button>
                     </div>
-                    {inputs.maxirataPaymentMode === 'refinance' && (
+                    {inputs.maxirataNoBtpMode === 'refinance' && (
                       <div className="text-[11px] text-slate-600 bg-slate-50 p-1.5 rounded border border-slate-200">
-                        {inputs.loanPeriod2Months} rate da {formatEuro(maxirataNoBtp.monthlyPaymentPeriod2, 2)} (TAN {inputs.tanPeriod2Percent}%)
+                        {inputs.refinanceMonths} rate da {formatEuro(maxirataNoBtp.monthlyInstallment2ndPeriod, 2)} (TAEG {inputs.refinanceTaeg}%)
                       </div>
                     )}
                   </div>
@@ -463,7 +452,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                       <span>Copertura con Salvadanaio</span>
                     </div>
                     <div className="text-[11px] text-slate-500 mt-0.5">
-                      Capitale nel titolo: {formatEuro(maxirata.accumulatedPortfolioAtMaturity, 2)}
+                      Capitale nel titolo: {formatEuro(maxirata.accumulatedBtpAtMaturity, 2)}
                     </div>
                   </div>
                 </td>
@@ -485,7 +474,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   0,00 €
                 </td>
                 <td className={`p-4 font-bold text-emerald-700 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
-                  +{formatEuro(maxirata.totalCouponsEarned, 2)}
+                  +{formatEuro(maxirata.btpAccumulator.totalNetInterestEarned, 2)}
                 </td>
               </tr>
 
@@ -502,13 +491,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   0,00 €
                 </td>
                 <td className={`p-4 font-medium text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
-                  {inputs.maxirataPaymentMode === 'cash' ? formatEuro(maxirataNoBtp.futureValue, 2) : 'Rifinanziata a debito'}
+                  {inputs.maxirataNoBtpMode === 'pay_cash' ? formatEuro(maxirataNoBtp.maxirataAmount, 2) : 'Rifinanziata a debito'}
                 </td>
                 <td className={`p-4 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
-                  {maxirata.gap <= 0.01 ? (
+                  {maxirata.gapAmount <= 0.01 ? (
                     <span className="font-bold text-emerald-700">0,00 € (Interamente Coperta)</span>
                   ) : (
-                    <span className="font-bold text-amber-700">Gap: {formatEuro(maxirata.gap, 2)}</span>
+                    <span className="font-bold text-amber-700">Gap: {formatEuro(maxirata.gapAmount, 2)}</span>
                   )}
                 </td>
               </tr>
@@ -533,13 +522,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   Nessun finanziamento
                 </td>
                 <td className={`p-4 text-slate-700 tabular-nums ${mobileViewAll || mobileActiveTab === 'standard' ? '' : 'hidden lg:table-cell'}`}>
-                  TAN {inputs.standardLoanTanPercent}% • TAEG {inputs.standardLoanTaegPercent}%
+                  TAEG {formatEuro(standard.effectiveTaeg, 2)}%
                 </td>
                 <td className={`p-4 text-slate-700 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
-                  TAN {inputs.tanPeriod1Percent}% • TAEG {inputs.taegPeriod1Percent}%
+                  TAN {inputs.maxirataTan}% • TAEG {inputs.maxirataTaeg}%
                 </td>
                 <td className={`p-4 text-slate-700 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
-                  TAN {inputs.tanPeriod1Percent}% • TAEG {inputs.taegPeriod1Percent}%
+                  TAN {inputs.maxirataTan}% • TAEG {inputs.maxirataTaeg}%
                 </td>
               </tr>
 
@@ -553,13 +542,13 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                   0,00 €
                 </td>
                 <td className={`p-4 text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'standard' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(standard.totalInterestPaid, 2)}
+                  {formatEuro(standard.totalInterestAndFees, 2)}
                 </td>
                 <td className={`p-4 text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(maxirataNoBtp.totalInterest, 2)}
+                  {formatEuro(maxirataNoBtp.totalInterestAndFees, 2)}
                 </td>
                 <td className={`p-4 text-slate-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
-                  {formatEuro(maxirata.totalInterestPaid, 2)}
+                  {formatEuro(maxirata.totalInterestAndFees1stPeriod, 2)}
                 </td>
               </tr>
 
@@ -573,10 +562,10 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                     </div>
                   </td>
                   <td className={`p-4 font-medium text-amber-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'cash' ? '' : 'hidden lg:table-cell'}`}>
-                    +{formatEuro(cash.opportunityCostLost, 2)}
+                    +{formatEuro(cash.opportunityCostBtp, 2)}
                   </td>
                   <td className={`p-4 font-medium text-amber-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'standard' ? '' : 'hidden lg:table-cell'}`}>
-                    +{formatEuro(standard.opportunityCostLost, 2)}
+                    +{formatEuro(standard.liquidityBtpGain, 2)}
                   </td>
                   <td className={`p-4 font-medium text-amber-900 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
                     0,00 €
@@ -599,7 +588,7 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 {/* Totale Cash */}
                 <td className={`p-4 tabular-nums ${mobileViewAll || mobileActiveTab === 'cash' ? '' : 'hidden lg:table-cell'}`}>
                   <div className="text-base font-bold text-slate-900">
-                    {formatEuro(cash.totalNetCost, 2)}
+                    {formatEuro(cash.realNetCost, 2)}
                   </div>
                   <div className="text-[11px] text-slate-500 mt-0.5">
                     Riferimento base
@@ -609,37 +598,37 @@ export const InteractiveComparisonCards: React.FC<InteractiveComparisonCardsProp
                 {/* Totale Standard */}
                 <td className={`p-4 tabular-nums ${mobileViewAll || mobileActiveTab === 'standard' ? '' : 'hidden lg:table-cell'}`}>
                   <div className="text-base font-bold text-slate-900">
-                    {formatEuro(standard.totalNetCost, 2)}
+                    {formatEuro(standard.realNetCost, 2)}
                   </div>
                   <div className="text-[11px] text-slate-500 mt-0.5">
-                    {standard.totalNetCost > cash.totalNetCost
-                      ? `+${formatEuro(standard.totalNetCost - cash.totalNetCost, 2)} vs contanti`
-                      : `-${formatEuro(cash.totalNetCost - standard.totalNetCost, 2)} vs contanti`}
+                    {standard.realNetCost > cash.realNetCost
+                      ? `+${formatEuro(standard.realNetCost - cash.realNetCost, 2)} vs contanti`
+                      : `-${formatEuro(cash.realNetCost - standard.realNetCost, 2)} vs contanti`}
                   </div>
                 </td>
 
                 {/* Totale Maxirata Sola */}
                 <td className={`p-4 tabular-nums ${mobileViewAll || mobileActiveTab === 'maxirata_no_btp' ? '' : 'hidden lg:table-cell'}`}>
                   <div className="text-base font-bold text-slate-900">
-                    {formatEuro(maxirataNoBtp.totalNetCost, 2)}
+                    {formatEuro(maxirataNoBtp.realNetCost, 2)}
                   </div>
                   <div className="text-[11px] text-slate-500 mt-0.5">
-                    {maxirataNoBtp.totalNetCost > cash.totalNetCost
-                      ? `+${formatEuro(maxirataNoBtp.totalNetCost - cash.totalNetCost, 2)} vs contanti`
-                      : `-${formatEuro(cash.totalNetCost - maxirataNoBtp.totalNetCost, 2)} vs contanti`}
+                    {maxirataNoBtp.realNetCost > cash.realNetCost
+                      ? `+${formatEuro(maxirataNoBtp.realNetCost - cash.realNetCost, 2)} vs contanti`
+                      : `-${formatEuro(cash.realNetCost - maxirataNoBtp.realNetCost, 2)} vs contanti`}
                   </div>
                 </td>
 
                 {/* Totale Maxirata + BTP */}
                 <td className={`p-4 tabular-nums bg-blue-50/40 border-l border-r border-blue-200 ${mobileViewAll || mobileActiveTab === 'maxirata' ? '' : 'hidden lg:table-cell'}`}>
                   <div className="text-base font-bold text-blue-900">
-                    {formatEuro(maxirata.totalNetCost, 2)}
+                    {formatEuro(maxirata.realNetCost, 2)}
                   </div>
                   <div className="text-[11px] font-semibold text-emerald-800 mt-0.5">
-                    {maxirata.totalNetCost < cash.totalNetCost ? (
-                      `Risparmio reale: -${formatEuro(cash.totalNetCost - maxirata.totalNetCost, 2)}`
+                    {maxirata.realNetCost < cash.realNetCost ? (
+                      `Risparmio reale: -${formatEuro(cash.realNetCost - maxirata.realNetCost, 2)}`
                     ) : (
-                      `Differenziale: +${formatEuro(maxirata.totalNetCost - cash.totalNetCost, 2)}`
+                      `Differenziale: +${formatEuro(maxirata.realNetCost - cash.realNetCost, 2)}`
                     )}
                   </div>
                 </td>
